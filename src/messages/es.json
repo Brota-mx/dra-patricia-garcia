@@ -73,6 +73,21 @@
     "indexLead": "Medicina general y procedimientos estéticos en Playa del Carmen. Cada procedimiento se valora en consulta antes de proponerse.",
     "detailsPending": "Los detalles de este servicio se comparten en la valoración."
   },
+  "about": {
+    "eyebrow": "Sobre mí",
+    "title": "Quién te va a atender",
+    "lead": "Antes de decidir un procedimiento, tiene sentido saber quién lo realiza y con qué formación. Aquí está todo, y es verificable.",
+    "credentialsTitle": "Formación y registro",
+    "verifyLicense": "Verificar cédula en el Registro Nacional de Profesionistas",
+    "verifyNote": "La cédula profesional se puede consultar públicamente. Te invito a hacerlo — con la mía y con la de cualquier persona que te vaya a inyectar.",
+    "approachTitle": "Cómo trabajo",
+    "approachBody": "Toda propuesta parte de una valoración. Reviso qué buscas, qué es razonable esperar en tu caso y qué riesgos implica. Si el procedimiento que te interesa no es adecuado para ti, o si creo que no lo necesitas, te lo digo — aunque eso signifique que no agendes nada.",
+    "trainingTitle": "Formación adicional",
+    "internationalTitle": "Para pacientes internacionales",
+    "internationalBody": "Si vienes de fuera de México, la formación médica mexicana se acredita con la cédula profesional, un número que expide la Secretaría de Educación Pública y que cualquiera puede verificar en línea. Es el equivalente funcional a la licencia médica de tu país.",
+    "pendingPortrait": "Fotografía profesional pendiente.",
+    "pendingLicense": "Cédula profesional pendiente de publicar."
+  },
   "common": {
     "readMore": "Leer más",
     "backToHome": "Volver al inicio",

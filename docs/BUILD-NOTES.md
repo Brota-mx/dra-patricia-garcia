@@ -293,3 +293,50 @@ export type StaticPathname = Exclude<AppPathname, `${string}[${string}`>;
 `StaticPathname` es lo que aceptan la navegación, el sitemap y `buildAlternates`. Ahora es
 **imposible** pasar una ruta dinámica sin sus params a un `Link` — el error salió en typecheck, no
 en un 404 de producción.
+
+---
+
+## Fase 6 · Sobre mí (2026-07-21)
+
+**Estado:** ✅ completa en estructura. **Bloqueada por datos del cliente** para cumplir su función.
+
+Es la página que más pesa para SEO en salud: Google trata la salud como YMYL y exige señales de
+autoridad verificables. Y hay obligación legal — el art. 83 LGS y el art. 19 RLGSMP exigen expresar
+en la publicidad la institución que expidió el título y el número de cédula profesional.
+
+### La decisión de diseño: verificable, no afirmado
+
+La diferencia entre "médica certificada" y una cédula con enlace al **Registro Nacional de
+Profesionistas** es la diferencia entre una afirmación y una verificación. Es de las señales de
+confianza más baratas que existen y casi ningún competidor local la usa.
+
+Implementado: cuando llegue la cédula, aparece el badge **y** el enlace de verificación con el texto
+*"te invito a hacerlo — con la mía y con la de cualquier persona que te vaya a inyectar"*.
+
+### Bloque para pacientes internacionales — no es traducción
+
+El lector de EE.UU. o Canadá **no puede mapear la cédula mexicana a "board-certified"**, y esa
+incertidumbre genera desconfianza por defecto, no por sospecha. Así que la versión en inglés tiene
+un bloque propio que explica qué es la cédula y que es públicamente verificable. La investigación de
+pacientes lo señaló como la hipótesis más frágil del proyecto.
+
+### Precisión de credenciales que no se puede relajar
+
+⚠️ **"Medicina estética" no es especialidad reconocida por CONACEM.** Si la doctora es Médico
+Cirujano con diplomados, el sitio debe decir exactamente eso. Escribir "especialista en medicina
+estética" sin cédula de especialidad es exposición legal *y* degrada el E-E-A-T en cuanto alguien lo
+contrasta. Por eso `practitioner.title` dice "Médica Cirujana" y el campo `training` está separado.
+
+### Los huecos se declaran, no se rellenan
+
+| Falta | Qué muestra |
+|---|---|
+| Retrato profesional | Marco punteado con "Fotografía profesional pendiente" — **nunca stock**. En Pagaza la ausencia del retrato del socio fue la fuga de conversión #1, y el 92% de los pacientes lee la bio antes de agendar |
+| Cédula | "Cédula profesional pendiente de publicar". El badge y el enlace de verificación aparecen solos cuando llegue |
+| Diplomados | La sección entera no se renderiza |
+
+### Verificado en producción
+
+`/es/sobre-mi` y `/en/about` → 200, **sin `noindex`** (se quitó el de la Fase 2, debe indexarse),
+JSON-LD `Physician` con `alumniOf` y `sameAs` al Instagram, y sitemap con las 3 rutas que ya tienen
+contenido real.

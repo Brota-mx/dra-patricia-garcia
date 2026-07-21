@@ -73,8 +73,18 @@ Ver `.env.example`. Sin `RESEND_API_KEY` / Upstash / Turnstile, `/api/contact` d
 1. **TypeScript strict. Sin `any`.** Sin `@ts-ignore` sin justificación escrita.
 2. **Cero datos clínicos inventados.** Indicaciones, precios, duraciones y tiempos de recuperación
    solo si la doctora los entregó por escrito. Si falta el dato, dejar `TODO(cliente)` visible.
-3. **Cero claims de garantía.** Nada de "resultados garantizados", "sin riesgos" o "permanente".
-   Es riesgo regulatorio (COFEPRIS), no preferencia de copy.
+3. **Reglas de copy que son cumplimiento, no estilo** — detalle y fundamento en
+   `docs/investigacion/compliance-publicidad.md`. Antes de escribir cualquier frase visible:
+   - **Cero verbos terapéuticos** en servicios estéticos (tratar, curar, prevenir, rejuvenecer,
+     regenerar, reparar, restaurar, "antiedad", "detox"). Se escribe sobre **la apariencia de** la
+     condición: "suaviza la apariencia de las líneas", no "reduce las arrugas".
+   - **Cero claims de garantía** ("resultados garantizados", "sin riesgos", "sin dolor",
+     "permanente"), superlativos ("la mejor de Playa") ni comparaciones con otros profesionales.
+   - **Cero marcas** de medicamento o dispositivo (Botox®, Juvederm, Dysport). Se describe el
+     servicio, no el producto.
+   - **Riesgos, contraindicaciones y efectos secundarios son obligatorios y VISIBLES** en cada
+     procedimiento estético. No en modal ni acordeón colapsado. `isPublishable()` lo impone.
+   - **Paridad de claims entre ES y EN.** Ambas versiones son publicidad.
 4. **El formulario nunca pide información de salud.** Los datos de salud son datos personales
    sensibles bajo la LFPDPPP; captarlos dispara obligaciones que no queremos asumir.
 5. **Antes/después y testimonios permanecen tras feature flag apagada** hasta autorización explícita

@@ -17,11 +17,25 @@
     "skipToContent": "Saltar al contenido"
   },
   "hero": {
-    "eyebrow": "Medicina general y estética",
-    "title": "Dra. Patricia García",
-    "subtitle": "Playa del Carmen, Quintana Roo",
-    "cta": "Agendar por WhatsApp",
-    "ctaSecondary": "Ver disponibilidad"
+    "eyebrow": "Medicina general y estética · Playa del Carmen",
+    "title": "Medicina estética con criterio médico",
+    "lead": "Consulta de medicina general y procedimientos estéticos con valoración previa. El plan se define a partir de tus rasgos y de lo que buscas — y si algo no es adecuado para ti, te lo digo.",
+    "cta": "Escribir por WhatsApp",
+    "ctaSecondary": "Ver servicios",
+    "note": "Atención en español e inglés"
+  },
+  "sections": {
+    "servicesTitle": "Servicios",
+    "servicesLead": "Cada procedimiento se valora en consulta antes de proponerse.",
+    "servicesCta": "Preguntar por este servicio",
+    "credentialsTitle": "Formación y registro",
+    "faqTitle": "Preguntas frecuentes",
+    "faqLead": "Lo que la gente pregunta antes de agendar.",
+    "locationTitle": "Dónde estoy",
+    "locationLead": "Consultorio en Playa del Carmen, Quintana Roo.",
+    "locationPending": "Te comparto la dirección exacta y los horarios por WhatsApp.",
+    "bookingTitle": "¿Tienes dudas?",
+    "bookingLead": "Escríbeme y las resolvemos antes de que decidas nada."
   },
   "credentials": {
     "school": "Instituto Politécnico Nacional",

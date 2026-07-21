@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { clinic } from "@/content/clinic";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Hero } from "@/components/sections/Hero";
+import { CredentialsBand } from "@/components/sections/CredentialsBand";
+import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { FAQ } from "@/components/sections/FAQ";
+import { LocationMap } from "@/components/sections/LocationMap";
+import { BookingCTA } from "@/components/sections/BookingCTA";
 import { buildAlternates } from "@/lib/seo";
+import { getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -25,34 +29,27 @@ export default async function HomePage({
   const t = await getTranslations();
 
   return (
-    <main className="mx-auto flex max-w-[1200px] flex-col justify-center px-6 py-24">
-      <p className="eyebrow text-malva-deep">{t("hero.eyebrow")}</p>
-      <h1 className="mt-4 text-display sm:text-display-xl">{t("hero.title")}</h1>
-      <p className="mt-3 text-body-lg text-muted">{t("hero.subtitle")}</p>
+    <>
+      <Hero locale={locale} />
+      <CredentialsBand />
+      <ServicesGrid locale={locale} />
+      {/* Se autooculta mientras la doctora no conteste las preguntas. */}
+      <FAQ locale={locale} />
+      <LocationMap />
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Badge>{t("credentials.school")}</Badge>
-        <Badge tone="accent">
-          {t("credentials.cofeprisLabel")} {clinic.cofepris}
-        </Badge>
-      </div>
-
-      <div className="mt-10 flex flex-wrap gap-4">
-        <Button size="lg">{t("hero.cta")}</Button>
-        <Button size="lg" variant="secondary">
-          {t("hero.ctaSecondary")}
-        </Button>
-      </div>
-
-      {/*
-        Andamio. Las secciones reales (Hero, ServicesGrid, CredentialsBand, FAQ,
-        LocationMap, BookingCTA) llegan en la Fase 4 — ver BLUEPRINT.md §9.
-        Los CTAs todavía no apuntan a ningún lado: WhatsApp y Cal.com se
-        cablean en la Fase 8.
-      */}
-      <p className="mt-16 max-w-[68ch] text-sm text-muted">
-        Andamio de Fase 2 · Layout + SEO base. Siguiente: Fase 3 · Contenido tipado.
-      </p>
-    </main>
+      <section className="mx-auto max-w-[1200px] px-6 py-20">
+        <h2 className="text-heading">{t("sections.bookingTitle")}</h2>
+        <p className="mt-3 max-w-[52ch] text-muted">
+          {t("sections.bookingLead")}
+        </p>
+        <div className="mt-8">
+          <BookingCTA
+            message={t("whatsapp.defaultMessage")}
+            source="home-footer"
+            fallbackHref={getPathname({ href: "/contacto", locale })}
+          />
+        </div>
+      </section>
+    </>
   );
 }

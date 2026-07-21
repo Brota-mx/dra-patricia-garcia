@@ -169,3 +169,58 @@ indexar páginas "Próximamente" daña el dominio, y en salud (YMYL) el castigo 
 - `WhatsAppFab` **no se renderiza** sin `NEXT_PUBLIC_WHATSAPP_NUMBER` — comportamiento intencional,
   mejor nada que un enlace roto. Aparecerá cuando el cliente entregue el número.
 - Cero errores de consola.
+
+---
+
+## Fase 4 · Home (2026-07-21)
+
+**Estado:** ✅ completa. Build, typecheck, lint y contraste en verde. Verificada en runtime contra
+el build de producción, en ambos idiomas.
+
+### Secciones
+
+`Hero` · `CredentialsBand` · `ServicesGrid` · `FAQ` · `LocationMap` · CTA de cierre.
+
+**El Hero dice qué es y con qué criterio, no sólo el nombre de la doctora.** Un hero que sólo repite
+el nombre no comunica propuesta — lección directa de la auditoría de Pagaza, donde el hero sin
+propuesta fue uno de los hallazgos convergentes.
+
+El párrafo cierra con *"y si algo no es adecuado para ti, te lo digo"*. Es posicionamiento
+deliberado: la investigación de pacientes mostró que el mercado se está reconfigurando alrededor del
+miedo a sobrellenarse, y que la señal más diferenciadora hoy es la disposición a decir que no.
+
+### Cómo se comporta el contenido que falta
+
+Esto es lo que más importa de la fase: **la home se degrada con dignidad**, no con relleno.
+
+| Dato ausente | Comportamiento |
+|---|---|
+| Respuestas de FAQ (todas `null`) | La sección FAQ **no se renderiza**. Publicar "Próximamente" bajo una pregunta de seguridad sería peor que no tener la sección |
+| `clinic.address` / `geo` | `LocationMap` muestra ciudad + "te comparto la dirección por WhatsApp". No se inventa dirección ni se pinta un mapa genérico |
+| `clinic.license` | El badge de cédula simplemente no aparece. En cuanto llegue el dato, aparece solo |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Los CTAs caen a la página de contacto en vez de romperse |
+
+Verificado en el DOM: con todo en `null`, la home renderiza 4 secciones con contenido real y ninguna
+con placeholders.
+
+### Detalle corregido durante la verificación
+
+Los CTAs caían a `/contacto` sin prefijo de idioma. Funcionaba por redirección del middleware, pero
+sobraba un salto. Ahora reciben `fallbackHref` ya localizado. Verificado: `/es` enlaza a
+`/es/contacto` y `/en` a `/en/contact`.
+
+### Verificación bilingüe (build de producción)
+
+```
+/es → /es/servicios /es/sobre-mi /es/contacto /es/aviso-de-privacidad /es/blog
+/en → /en/services  /en/about    /en/contact  /en/privacy-policy      /en/blog
+H1 en inglés: "Aesthetic medicine, with medical judgment"
+Servicios: Lip Filler · Botulinum Toxin · Skin Booster · General Medicine Consultation
+```
+
+Los nombres en inglés son términos de mercado, no traducciones literales.
+
+### Pendiente de verificar
+
+El acordeón de FAQ **no se ha podido probar interactivamente** porque no hay ninguna pregunta
+contestada. Probar navegación por teclado y `aria` en cuanto la doctora entregue respuestas.

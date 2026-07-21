@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Dra. Patricia García | Medicina General y Estética en Playa del Carmen",
+    "description": "Consulta de medicina general y medicina estética en Playa del Carmen. Médica cirujana egresada del Instituto Politécnico Nacional. Agenda tu cita."
+  },
+  "nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "about": "Sobre mí",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "bookAppointment": "Agendar cita"
+  },
+  "hero": {
+    "eyebrow": "Medicina general y estética",
+    "title": "Dra. Patricia García",
+    "subtitle": "Playa del Carmen, Quintana Roo",
+    "cta": "Agendar por WhatsApp",
+    "ctaSecondary": "Ver disponibilidad"
+  },
+  "credentials": {
+    "school": "Instituto Politécnico Nacional",
+    "cofeprisLabel": "Cofepris",
+    "cofepris": "2623032002A00011"
+  },
+  "common": {
+    "readMore": "Leer más",
+    "backToHome": "Volver al inicio",
+    "languageSwitch": "English",
+    "medicalDisclaimer": "Este contenido es informativo y no sustituye una consulta médica."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o cambió de dirección."
+  }
+}

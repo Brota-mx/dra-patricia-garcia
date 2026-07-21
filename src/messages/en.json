@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Dr. Patricia García | General & Aesthetic Medicine in Playa del Carmen",
+    "description": "General medicine and aesthetic medicine consultations in Playa del Carmen, Mexico. Physician trained at Instituto Politécnico Nacional. Book your appointment."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "bookAppointment": "Book appointment"
+  },
+  "hero": {
+    "eyebrow": "General & aesthetic medicine",
+    "title": "Dr. Patricia García",
+    "subtitle": "Playa del Carmen, Quintana Roo",
+    "cta": "Book via WhatsApp",
+    "ctaSecondary": "See availability"
+  },
+  "credentials": {
+    "school": "Instituto Politécnico Nacional",
+    "cofeprisLabel": "Cofepris",
+    "cofepris": "2623032002A00011"
+  },
+  "common": {
+    "readMore": "Read more",
+    "backToHome": "Back to home",
+    "languageSwitch": "Español",
+    "medicalDisclaimer": "This content is informational and does not replace a medical consultation."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has moved."
+  }
+}

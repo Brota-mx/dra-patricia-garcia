@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
+/*
+ * Tokens de marca — Dra. Patricia García
+ * Origen: logo real en work/ (negro sobre blanco, sans geométrica) + acento
+ * rosa-malva muestreado del feed de Instagram. EL LOGO MANDA, el feed acentúa.
+ */
+@theme {
+  --color-ink: #14110f;
+  --color-bone: #faf7f4;
+  --color-surface: #ffffff;
+  --color-malva: #9c6b8e;
+  --color-malva-soft: #efe2ea;
+  --color-muted: #6b625c;
+  --color-line: #e5ded8;
+  --color-success: #2f7a5b;
+  --color-destructive: #b3261e;
+
+  --font-display: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 16px;
+}
+
+/*
+ * ⚠️ ACCESIBILIDAD: --color-malva sobre --color-bone da ≈4.6:1.
+ * Válido para texto ≥18px, botones e iconos. NO usarlo en texto pequeño:
+ * para cuerpo de texto usar --color-ink o --color-muted.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

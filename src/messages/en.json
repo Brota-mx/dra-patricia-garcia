@@ -17,11 +17,25 @@
     "skipToContent": "Skip to content"
   },
   "hero": {
-    "eyebrow": "General & aesthetic medicine",
-    "title": "Dr. Patricia García",
-    "subtitle": "Playa del Carmen, Quintana Roo",
-    "cta": "Book via WhatsApp",
-    "ctaSecondary": "See availability"
+    "eyebrow": "General & aesthetic medicine · Playa del Carmen",
+    "title": "Aesthetic medicine, with medical judgment",
+    "lead": "General medicine consultations and aesthetic procedures, always with a prior assessment. The plan follows your features and what you're looking for — and if something isn't right for you, I'll say so.",
+    "cta": "Message on WhatsApp",
+    "ctaSecondary": "See services",
+    "note": "Consultations available in English and Spanish"
+  },
+  "sections": {
+    "servicesTitle": "Services",
+    "servicesLead": "Every procedure is assessed in consultation before it's proposed.",
+    "servicesCta": "Ask about this service",
+    "credentialsTitle": "Training and registration",
+    "faqTitle": "Frequently asked questions",
+    "faqLead": "What people ask before booking.",
+    "locationTitle": "Where to find me",
+    "locationLead": "Medical office in Playa del Carmen, Quintana Roo.",
+    "locationPending": "I'll share the exact address and hours over WhatsApp.",
+    "bookingTitle": "Have questions?",
+    "bookingLead": "Message me and we'll go through them before you decide anything."
   },
   "credentials": {
     "school": "Instituto Politécnico Nacional",

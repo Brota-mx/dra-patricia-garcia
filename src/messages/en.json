@@ -9,7 +9,12 @@
     "about": "About",
     "blog": "Blog",
     "contact": "Contact",
-    "bookAppointment": "Book appointment"
+    "privacy": "Privacy Policy",
+    "bookAppointment": "Book appointment",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "skipToContent": "Skip to content"
   },
   "hero": {
     "eyebrow": "General & aesthetic medicine",
@@ -23,11 +28,31 @@
     "cofeprisLabel": "Cofepris",
     "cofepris": "2623032002A00011"
   },
+  "footer": {
+    "tagline": "General and aesthetic medicine in Playa del Carmen.",
+    "navTitle": "Navigation",
+    "contactTitle": "Contact",
+    "legalTitle": "Legal",
+    "followUs": "Follow us",
+    "rights": "All rights reserved.",
+    "addressPending": "Address available via WhatsApp",
+    "hoursPending": "Hours available via WhatsApp"
+  },
+  "whatsapp": {
+    "label": "Message on WhatsApp",
+    "defaultMessage": "Hi! I'd like to book an appointment."
+  },
   "common": {
     "readMore": "Read more",
     "backToHome": "Back to home",
-    "languageSwitch": "Español",
     "medicalDisclaimer": "This content is informational and does not replace a medical consultation."
+  },
+  "pages": {
+    "services": { "title": "Services", "intro": "Coming soon." },
+    "about": { "title": "About", "intro": "Coming soon." },
+    "blog": { "title": "Blog", "intro": "Coming soon." },
+    "contact": { "title": "Contact", "intro": "Coming soon." },
+    "privacy": { "title": "Privacy Policy", "intro": "Coming soon." }
   },
   "notFound": {
     "title": "Page not found",

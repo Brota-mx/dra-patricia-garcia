@@ -1,22 +1,31 @@
-import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
-import { use } from "react";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { clinic } from "@/content/clinic";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { buildAlternates } from "@/lib/seo";
+import type { Locale } from "@/i18n/routing";
 
-export default function HomePage({
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = use(params);
-  setRequestLocale(locale);
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return { alternates: buildAlternates("/", locale) };
+}
 
-  const t = useTranslations();
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations();
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1200px] flex-col justify-center px-6 py-24">
+    <main className="mx-auto flex max-w-[1200px] flex-col justify-center px-6 py-24">
       <p className="eyebrow text-malva-deep">{t("hero.eyebrow")}</p>
       <h1 className="mt-4 text-display sm:text-display-xl">{t("hero.title")}</h1>
       <p className="mt-3 text-body-lg text-muted">{t("hero.subtitle")}</p>
@@ -38,11 +47,11 @@ export default function HomePage({
       {/*
         Andamio. Las secciones reales (Hero, ServicesGrid, CredentialsBand, FAQ,
         LocationMap, BookingCTA) llegan en la Fase 4 — ver BLUEPRINT.md §9.
-        Los CTAs de arriba todavía no apuntan a ningún lado: WhatsApp y Cal.com
-        se cablean en la Fase 8.
+        Los CTAs todavía no apuntan a ningún lado: WhatsApp y Cal.com se
+        cablean en la Fase 8.
       */}
       <p className="mt-16 max-w-[68ch] text-sm text-muted">
-        Andamio de Fase 1 · Sistema de diseño. Siguiente: Fase 2 · Layout + SEO base.
+        Andamio de Fase 2 · Layout + SEO base. Siguiente: Fase 3 · Contenido tipado.
       </p>
     </main>
   );

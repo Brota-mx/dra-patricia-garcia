@@ -73,6 +73,21 @@
     "indexLead": "General medicine and aesthetic procedures in Playa del Carmen. Every procedure is assessed in consultation before it's proposed.",
     "detailsPending": "Details for this service are shared during your consultation."
   },
+  "about": {
+    "eyebrow": "About",
+    "title": "Who will be treating you",
+    "lead": "Before deciding on a procedure, it makes sense to know who performs it and what their training is. It's all here — and it's verifiable.",
+    "credentialsTitle": "Training and registration",
+    "verifyLicense": "Verify license in Mexico's National Registry of Professionals",
+    "verifyNote": "Medical licenses in Mexico are publicly searchable. I'd encourage you to check mine — and anyone else's who is going to inject you.",
+    "approachTitle": "How I work",
+    "approachBody": "Every proposal starts with an assessment. I review what you're looking for, what is reasonable to expect in your case, and what risks are involved. If the procedure you're interested in isn't right for you, or if I don't think you need it, I'll say so — even if that means you don't book anything.",
+    "trainingTitle": "Additional training",
+    "internationalTitle": "For international patients",
+    "internationalBody": "If you're coming from abroad: Mexican medical training is credentialed through the cédula profesional, a number issued by the Ministry of Public Education that anyone can verify online. It's the functional equivalent of a medical license in your country.",
+    "pendingPortrait": "Professional photograph pending.",
+    "pendingLicense": "Professional license pending publication."
+  },
   "common": {
     "readMore": "Read more",
     "backToHome": "Back to home",

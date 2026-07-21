@@ -11,7 +11,7 @@ import { siteUrl } from "@/lib/seo";
  * TODO(Fases 5,6,8,9,10): agregar /servicios, /sobre-mi, /contacto, /blog y
  * /aviso-de-privacidad conforme se pueblen.
  */
-const publicRoutes: StaticPathname[] = ["/", "/servicios"];
+const publicRoutes: StaticPathname[] = ["/", "/servicios", "/sobre-mi"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();

@@ -224,3 +224,72 @@ Los nombres en inglés son términos de mercado, no traducciones literales.
 
 El acordeón de FAQ **no se ha podido probar interactivamente** porque no hay ninguna pregunta
 contestada. Probar navegación por teclado y `aria` en cuanto la doctora entregue respuestas.
+
+---
+
+## Fase 5 · Servicios (2026-07-21)
+
+**Estado:** ✅ completa. Build, typecheck, lint y contraste en verde. Guardia de publicación
+verificada en runtime.
+
+### La guardia legal, funcionando de verdad
+
+`generateStaticParams` sólo genera rutas para servicios que pasan `isPublishable()`. Resultado del
+build:
+
+```
+● /[locale]/servicios/[slug]
+  ├ /es/servicios/medicina-general
+  ├ /es/servicios/cuidado-de-la-piel
+  ├ /en/services/general-medicine
+  └ /en/services/medical-grade-skincare
+```
+
+**Los tres procedimientos estéticos no generaron ruta.** Verificado con curl:
+
+| Ruta | Estado | Motivo |
+|---|---|---|
+| `/es/servicios/medicina-general` | 200 | No es embellecimiento: no le aplica el art. 65 |
+| `/en/services/general-medicine` | 200 | ídem |
+| `/es/servicios/relleno-de-labios` | **404** | `disclosure` en `null` |
+| `/en/services/lip-filler` | **404** | ídem |
+| `/es/servicios/toxina-botulinica` | **404** | ídem |
+
+No es un bug: es el art. 65 fr. II y III del RLGSMP aplicado por el compilador. En cuanto la doctora
+entregue riesgos, contraindicaciones y efectos secundarios, las rutas aparecen solas.
+
+El índice sí lista los cinco servicios (con su descripción y CTA de WhatsApp), pero **sólo enlaza al
+detalle los publicables** — enlazar a un 404 sería peor.
+
+🟠 **Pregunta abierta para el abogado:** si mencionar un procedimiento estético en el índice ya
+constituye publicidad sujeta al art. 65, el índice también tendría que llevar la divulgación. La
+lectura aplicada es que la divulgación corresponde a la página del procedimiento. Confirmar antes
+del go-live.
+
+### La divulgación obligatoria como sección, no como disclaimer
+
+`MandatoryDisclosureSection` renderiza riesgos, contraindicaciones y efectos secundarios en tres
+columnas, **visible y sin colapsar**, y **arriba del CTA**. El art. 65 exige que sea "de manera
+clara": un acordeón cerrado por defecto no lo es.
+
+Bonus no obvio: incluir los riesgos **sube** el E-E-A-T. Ocultarlos es señal de contenido comercial
+de baja calidad para los evaluadores de Google, y el paciente informado desconfía de quien no los
+menciona.
+
+### Hallazgo de tipos: rutas dinámicas contaminan las firmas
+
+Al registrar `"/servicios/[slug]"` en los `pathnames` de next-intl, el tipo `AppPathname` pasó a
+incluirla — y rompió **6 archivos** (`Header`, `Footer`, `sitemap`, `lib/seo`, `navigation`), porque
+todos aceptaban `AppPathname` como string simple y una ruta con segmento dinámico exige
+`{ pathname, params }`.
+
+Solución: separar los dos tipos.
+
+```ts
+export type AppPathname = keyof typeof routing.pathnames;
+export type StaticPathname = Exclude<AppPathname, `${string}[${string}`>;
+```
+
+`StaticPathname` es lo que aceptan la navegación, el sitemap y `buildAlternates`. Ahora es
+**imposible** pasar una ruta dinámica sin sus params a un `Link` — el error salió en typecheck, no
+en un 404 de producción.

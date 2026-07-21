@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPathname } from "@/i18n/navigation";
-import { routing, type AppPathname } from "@/i18n/routing";
+import { routing, type StaticPathname } from "@/i18n/routing";
 import { siteUrl } from "@/lib/seo";
 
 /**
@@ -11,7 +11,7 @@ import { siteUrl } from "@/lib/seo";
  * TODO(Fases 5,6,8,9,10): agregar /servicios, /sobre-mi, /contacto, /blog y
  * /aviso-de-privacidad conforme se pueblen.
  */
-const publicRoutes: AppPathname[] = ["/"];
+const publicRoutes: StaticPathname[] = ["/", "/servicios"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();

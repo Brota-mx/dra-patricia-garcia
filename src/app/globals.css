@@ -2,31 +2,65 @@
 
 /*
  * Tokens de marca — Dra. Patricia García
- * Origen: logo real en work/ (negro sobre blanco, sans geométrica) + acento
- * rosa-malva muestreado del feed de Instagram. EL LOGO MANDA, el feed acentúa.
+ *
+ * Origen: logo real en work/ (estetoscopio que forma un tulipán, negro sobre
+ * blanco, sans geométrica en mayúsculas) + acento rosa-malva muestreado del
+ * feed de Instagram. EL LOGO MANDA, el feed acentúa.
+ *
+ * ⚠️ Cualquier cambio de color debe pasar `pnpm check:contrast` antes de
+ * mergearse. No estimar contraste a ojo: el malva se estimó en 4.6:1 y en
+ * realidad da 4.01:1.
  */
 @theme {
+  /* ── Color ─────────────────────────────────────────────────────────────── */
   --color-ink: #14110f;
   --color-bone: #faf7f4;
   --color-surface: #ffffff;
+
+  /* Acento DECORATIVO: 4.01:1 sobre bone. Iconos, bordes, títulos ≥24px.
+     NUNCA para texto de cuerpo. */
   --color-malva: #9c6b8e;
+  /* Acento LEGIBLE: 5.13:1 sobre bone, 5.48:1 con texto blanco encima.
+     Enlaces, texto de acento y botones sólidos. */
+  --color-malva-deep: #8a5a7c;
   --color-malva-soft: #efe2ea;
+
   --color-muted: #6b625c;
   --color-line: #e5ded8;
   --color-success: #2f7a5b;
   --color-destructive: #b3261e;
 
+  /* ── Tipografía ────────────────────────────────────────────────────────── */
   --font-display: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 16px;
-}
+  --text-display-xl: 3.5rem; /* 56px — hero en escritorio */
+  --text-display-xl--line-height: 1.05;
+  --text-display-xl--letter-spacing: -0.02em;
 
-/*
- * ⚠️ ACCESIBILIDAD: --color-malva sobre --color-bone da ≈4.6:1.
- * Válido para texto ≥18px, botones e iconos. NO usarlo en texto pequeño:
- * para cuerpo de texto usar --color-ink o --color-muted.
- */
+  --text-display: 2.5rem; /* 40px — h1 */
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.015em;
+
+  --text-heading: 2rem; /* 32px — h2 */
+  --text-heading--line-height: 1.15;
+  --text-heading--letter-spacing: -0.01em;
+
+  --text-subheading: 1.5rem; /* 24px — h3 */
+  --text-subheading--line-height: 1.25;
+
+  --text-title: 1.25rem; /* 20px — h4 */
+  --text-title--line-height: 1.3;
+
+  --text-body-lg: 1.125rem; /* 18px — cuerpo de artículo */
+  --text-body-lg--line-height: 1.7;
+
+  /* ── Forma y ritmo ─────────────────────────────────────────────────────── */
+  --radius-card: 16px;
+
+  /* Sombra casi imperceptible: preferimos bordes de 1px sobre sombras pesadas */
+  --shadow-subtle: 0 1px 2px rgba(20, 17, 15, 0.06);
+}
 
 :root {
   color-scheme: light;
@@ -37,6 +71,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -45,15 +80,23 @@ h3,
 h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.01em;
 }
 
+/* Etiqueta superior de sección — mayúsculas con tracking abierto, igual que
+   el wordmark del logo. */
 .eyebrow {
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.75rem;
   font-weight: 500;
+}
+
+/* Foco visible y consistente en todo el sitio (a11y). */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-malva-deep);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -99,3 +99,73 @@ existe `pnpm check:contrast` (`scripts/check-contrast.mjs`), que valida los 10 p
 Estilos computados confirmados sobre el render real: botón primario `rgb(138,90,124)` = `#8A5A7C`
 con texto blanco, altura 44px; `h1` en Jost 40px/600; `body` en Inter sobre `rgb(250,247,244)`.
 Cero errores de consola. Las 4 rutas (`/es`, `/en`, y ambas `design-system`) responden 200.
+
+---
+
+## Fase 2 · Layout + SEO base (2026-07-21)
+
+**Estado:** ✅ completa. Build, typecheck, lint, contraste y audit en verde. Navegación, i18n y
+metadata verificadas en runtime contra el build de producción.
+
+### Decisión: slugs de ruta localizados
+
+El blueprint pedía rutas bilingües, pero servir `/en/servicios` a un lector en inglés desperdicia
+la mitad del beneficio de tener el sitio traducido — y el SEO en inglés era una de las razones para
+hacerlo bilingüe. Se configuraron `pathnames` en `defineRouting`:
+
+| Interno (carpeta) | ES | EN |
+|---|---|---|
+| `/servicios` | `/servicios` | `/services` |
+| `/sobre-mi` | `/sobre-mi` | `/about` |
+| `/contacto` | `/contacto` | `/contact` |
+| `/aviso-de-privacidad` | `/aviso-de-privacidad` | `/privacy-policy` |
+
+La carpeta en `app/[locale]/` siempre usa el slug **español**; next-intl reescribe. Al agregar una
+ruta hay que registrarla en `routing.ts` o no existirá su versión traducida.
+
+**Ojo con el listado del build:** muestra las rutas *internas* (`/en/servicios`), no las públicas.
+Es engañoso — la traducción la resuelve el middleware en runtime. Verificado con curl:
+`/en/services` → 200, `/en/servicios` → 307 (redirige al slug correcto).
+
+### hreflang con slugs traducidos
+
+`lib/seo.ts` → `buildAlternates()` genera canonical + hreflang apuntando a la URL traducida real.
+Si el hreflang apuntara a `/en/servicios` (que no existe), Google no emparejaría las versiones.
+Verificado en el HTML de producción:
+
+```
+/en/services  canonical → /en/services
+              hreflang es → /es/servicios
+              hreflang en → /en/services
+              x-default   → /es/servicios
+```
+
+### Rutas marcador con noindex
+
+Se crearon las 5 rutas del blueprint como marcadores para que la navegación funcione completa desde
+ahora. **Todas llevan `robots: { index: false, follow: true }`** y un `TODO(Fase N)` para quitarlo:
+indexar páginas "Próximamente" daña el dominio, y en salud (YMYL) el castigo es mayor. El
+`sitemap.ts` tampoco las lista todavía.
+
+### Trampas encontradas al verificar
+
+- **El scroll programático inyectado no dispara el listener de scroll.** El header parecía roto
+  (`window.scrollTo(0,400)` y seguía transparente). No lo estaba: con
+  `window.dispatchEvent(new Event('scroll'))` aplicó `backdrop-blur-md bg-bone/90` correctamente.
+  **Era el método de prueba, no el código** — un scroll real de usuario sí emite el evento.
+- **Un `curl` a un puerto equivocado devolvió el `robots.txt` de otro proyecto** (`Disallow: /api/`,
+  `Host:`), lo que hizo parecer que el nuestro estaba mal. Los artefactos reales en
+  `.next/server/app/robots.txt.body` eran correctos. **Lección:** al verificar por HTTP, confirmar
+  primero que responde el sitio esperado (un `grep` de algo único) antes de creerle al output.
+- **`next start` falla si un `next dev` corrió después del build** — el dev sobrescribe `.next` y
+  desaparece el build de producción. Hay que rebuildear antes de `start`.
+
+### Verificación de navegación (runtime)
+
+- Cambio de idioma desde la home: `/es` → `/en`, `html lang` actualizado, nav traducido.
+- **Cambio de idioma desde ruta interna: `/en/services` → `/es/servicios`**, con `h1` "Servicios" y
+  título "Servicios | Dra. Patricia García" (plantilla del layout funcionando).
+- Skip link "Saltar al contenido" presente; foco visible global desde la Fase 1.
+- `WhatsAppFab` **no se renderiza** sin `NEXT_PUBLIC_WHATSAPP_NUMBER` — comportamiento intencional,
+  mejor nada que un enlace roto. Aparecerá cuando el cliente entregue el número.
+- Cero errores de consola.

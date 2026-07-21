@@ -9,7 +9,12 @@
     "about": "Sobre mí",
     "blog": "Blog",
     "contact": "Contacto",
-    "bookAppointment": "Agendar cita"
+    "privacy": "Aviso de Privacidad",
+    "bookAppointment": "Agendar cita",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menu": "Menú",
+    "skipToContent": "Saltar al contenido"
   },
   "hero": {
     "eyebrow": "Medicina general y estética",
@@ -23,11 +28,31 @@
     "cofeprisLabel": "Cofepris",
     "cofepris": "2623032002A00011"
   },
+  "footer": {
+    "tagline": "Medicina general y estética en Playa del Carmen.",
+    "navTitle": "Navegación",
+    "contactTitle": "Contacto",
+    "legalTitle": "Legal",
+    "followUs": "Síguenos",
+    "rights": "Todos los derechos reservados.",
+    "addressPending": "Dirección disponible por WhatsApp",
+    "hoursPending": "Horarios disponibles por WhatsApp"
+  },
+  "whatsapp": {
+    "label": "Escribir por WhatsApp",
+    "defaultMessage": "¡Hola! Me gustaría agendar una cita."
+  },
   "common": {
     "readMore": "Leer más",
     "backToHome": "Volver al inicio",
-    "languageSwitch": "English",
     "medicalDisclaimer": "Este contenido es informativo y no sustituye una consulta médica."
+  },
+  "pages": {
+    "services": { "title": "Servicios", "intro": "Próximamente." },
+    "about": { "title": "Sobre mí", "intro": "Próximamente." },
+    "blog": { "title": "Blog", "intro": "Próximamente." },
+    "contact": { "title": "Contacto", "intro": "Próximamente." },
+    "privacy": { "title": "Aviso de Privacidad", "intro": "Próximamente." }
   },
   "notFound": {
     "title": "Página no encontrada",

@@ -4,7 +4,11 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Jost, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
+import { siteUrl } from "@/lib/seo";
 import "../globals.css";
 
 // next/font descarga y auto-hospeda las fuentes en build: cero peticiones a
@@ -29,20 +33,22 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
 
   return {
-    title: t("title"),
+    // Las páginas hijas heredan la plantilla: "Servicios | Dra. Patricia García"
+    title: { default: t("title"), template: `%s | Dra. Patricia García` },
     description: t("description"),
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-    ),
-    alternates: {
-      canonical: `/${locale}`,
-      languages: { es: "/es", en: "/en" },
+    metadataBase: new URL(siteUrl()),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      locale: locale === "es" ? "es_MX" : "en_US",
+      type: "website",
+      siteName: "Dra. Patricia García",
     },
   };
 }
@@ -60,11 +66,25 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   setRequestLocale(locale);
+  const t = await getTranslations("nav");
 
   return (
     <html lang={locale} className={`${jost.variable} ${inter.variable}`}>
-      <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body className="flex min-h-screen flex-col">
+        <NextIntlClientProvider>
+          <a
+            href="#contenido"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-2 focus:text-surface"
+          >
+            {t("skipToContent")}
+          </a>
+          <Header />
+          <div id="contenido" className="flex-1">
+            {children}
+          </div>
+          <Footer />
+          <WhatsAppFab />
+        </NextIntlClientProvider>
         <Analytics />
       </body>
     </html>

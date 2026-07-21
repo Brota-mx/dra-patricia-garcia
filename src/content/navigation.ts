@@ -1,4 +1,4 @@
-import type { AppPathname } from "@/i18n/routing";
+import type { StaticPathname } from "@/i18n/routing";
 
 /**
  * Fuente única de la navegación. El Header y el Footer leen de aquí — no
@@ -6,13 +6,13 @@ import type { AppPathname } from "@/i18n/routing";
  *
  * `labelKey` apunta a `messages/{es,en}.json` → namespace `nav`.
  */
-export const mainNav: Array<{ href: AppPathname; labelKey: string }> = [
+export const mainNav: Array<{ href: StaticPathname; labelKey: string }> = [
   { href: "/servicios", labelKey: "services" },
   { href: "/sobre-mi", labelKey: "about" },
   { href: "/blog", labelKey: "blog" },
   { href: "/contacto", labelKey: "contact" },
 ];
 
-export const legalNav: Array<{ href: AppPathname; labelKey: string }> = [
+export const legalNav: Array<{ href: StaticPathname; labelKey: string }> = [
   { href: "/aviso-de-privacidad", labelKey: "privacy" },
 ];

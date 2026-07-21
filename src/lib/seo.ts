@@ -1,5 +1,5 @@
 import { getPathname } from "@/i18n/navigation";
-import { routing, type AppPathname, type Locale } from "@/i18n/routing";
+import { routing, type StaticPathname, type Locale } from "@/i18n/routing";
 
 /**
  * Construye `alternates` (canonical + hreflang) para una ruta.
@@ -8,7 +8,7 @@ import { routing, type AppPathname, type Locale } from "@/i18n/routing";
  * (/en/services, no /en/servicios) o Google no empareja las versiones.
  * `x-default` apunta al idioma por defecto.
  */
-export function buildAlternates(href: AppPathname, locale: Locale) {
+export function buildAlternates(href: StaticPathname, locale: Locale) {
   const languages = Object.fromEntries(
     routing.locales.map((l) => [l, getPathname({ href, locale: l })]),
   );

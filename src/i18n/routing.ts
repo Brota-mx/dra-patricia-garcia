@@ -16,6 +16,12 @@ export const routing = defineRouting({
   pathnames: {
     "/": "/",
     "/servicios": { es: "/servicios", en: "/services" },
+    // El segmento dinámico NO se traduce solo: el slug viaja tal cual y cada
+    // servicio define el suyo por idioma en content/services.ts.
+    "/servicios/[slug]": {
+      es: "/servicios/[slug]",
+      en: "/services/[slug]",
+    },
     "/sobre-mi": { es: "/sobre-mi", en: "/about" },
     "/blog": "/blog",
     "/contacto": { es: "/contacto", en: "/contact" },
@@ -29,3 +35,11 @@ export const routing = defineRouting({
 
 export type Locale = (typeof routing.locales)[number];
 export type AppPathname = keyof typeof routing.pathnames;
+
+/**
+ * Rutas SIN segmentos dinámicos: las que se pueden pasar como string simple a
+ * `Link`, `getPathname` o al sitemap. Las dinámicas (`/servicios/[slug]`)
+ * exigen `{ pathname, params }` y por eso se excluyen aquí — si no, cualquier
+ * navegación aceptaría una ruta a la que le faltan los params.
+ */
+export type StaticPathname = Exclude<AppPathname, `${string}[${string}`>;

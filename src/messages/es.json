@@ -56,6 +56,23 @@
     "label": "Escribir por WhatsApp",
     "defaultMessage": "¡Hola! Me gustaría agendar una cita."
   },
+  "disclosure": {
+    "title": "Riesgos, contraindicaciones y efectos secundarios",
+    "risks": "Riesgos",
+    "contraindications": "Contraindicaciones",
+    "sideEffects": "Efectos secundarios",
+    "note": "Esta información es general y no sustituye la valoración médica. Los riesgos y contraindicaciones que apliquen a tu caso se revisan en consulta antes de decidir nada."
+  },
+  "servicePage": {
+    "whatItIs": "En qué consiste",
+    "benefits": "Qué busca el procedimiento",
+    "duration": "Duración de la sesión",
+    "includes": "Qué incluye",
+    "backToServices": "Ver todos los servicios",
+    "indexTitle": "Servicios",
+    "indexLead": "Medicina general y procedimientos estéticos en Playa del Carmen. Cada procedimiento se valora en consulta antes de proponerse.",
+    "detailsPending": "Los detalles de este servicio se comparten en la valoración."
+  },
   "common": {
     "readMore": "Leer más",
     "backToHome": "Volver al inicio",

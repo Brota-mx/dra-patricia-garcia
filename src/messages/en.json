@@ -56,6 +56,23 @@
     "label": "Message on WhatsApp",
     "defaultMessage": "Hi! I'd like to book an appointment."
   },
+  "disclosure": {
+    "title": "Risks, contraindications and side effects",
+    "risks": "Risks",
+    "contraindications": "Contraindications",
+    "sideEffects": "Side effects",
+    "note": "This information is general and does not replace a medical assessment. The risks and contraindications that apply to your case are reviewed in consultation before deciding anything."
+  },
+  "servicePage": {
+    "whatItIs": "What it involves",
+    "benefits": "What the procedure aims for",
+    "duration": "Session length",
+    "includes": "What's included",
+    "backToServices": "See all services",
+    "indexTitle": "Services",
+    "indexLead": "General medicine and aesthetic procedures in Playa del Carmen. Every procedure is assessed in consultation before it's proposed.",
+    "detailsPending": "Details for this service are shared during your consultation."
+  },
   "common": {
     "readMore": "Read more",
     "backToHome": "Back to home",

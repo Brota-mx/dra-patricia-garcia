@@ -249,9 +249,11 @@ consulta de medicina general · asesoría y venta de dermocosmética (Colorescie
   name: string;            // 2–80 caracteres
   email: string;           // email válido
   phone: string;           // 10–15 dígitos, se normaliza
-  service: string;         // debe existir en services.ts
+  // ⚠️ Categoría GENÉRICA, nunca clínica. Una opción como "tratamiento de
+  // acné" revelaría estado de salud y activaría el régimen de datos sensibles.
+  service: "medicina-general" | "medicina-estetica" | "otro";
   preferredContact: "whatsapp" | "email";
-  message?: string;        // ≤500 caracteres, OPCIONAL
+  message?: string;        // ≤300 caracteres, OPCIONAL
   locale: "es" | "en";
   website?: string;        // honeypot — si viene lleno, responder 200 y descartar
   turnstileToken: string;
@@ -275,6 +277,11 @@ consulta de medicina general · asesoría y venta de dermocosmética (Colorescie
 > etiqueta correcta es "¿Algo que quieras comentarnos?" — nunca "describe tu padecimiento". Bajo la
 > LFPDPPP los datos de salud son **datos personales sensibles** y captarlos por un formulario web
 > dispara obligaciones de consentimiento expreso que no queremos asumir. Ver sección 8.
+>
+> No basta con no preguntarlo: el paciente escribirá su padecimiento de todos modos. Por eso el
+> campo lleva **microcopy visible encima** (no tooltip) — *"Por tu privacidad, no incluyas
+> información sobre tu salud o padecimientos. Lo revisamos en consulta."* — más límite de 300
+> caracteres y política documentada de supresión de lo no solicitado.
 
 ---
 
@@ -382,32 +389,70 @@ Animaciones sobrias: `fade-up` de 300ms al entrar en viewport, respetando `prefe
 > publicación; aquí el riesgo es mayor porque hay datos de salud de por medio.
 > **Nada de esto es asesoría legal** — hay que validarlo con un abogado o con quien asesore a la doctora.
 
+> 🔄 **Actualizado 2026-07-21** tras investigación de compliance con fuentes normativas primarias.
+> Resumen accionable y fundamentos: `docs/investigacion/compliance-publicidad.md`.
+
 ### 8.1 Aviso de Privacidad (LFPDPPP)
 
-La Ley Federal de Protección de Datos Personales en Posesión de los Particulares exige un Aviso de
-Privacidad cuando se recaban datos personales. El formulario los recaba. Además, los **datos de salud
-son datos personales sensibles**, con requisitos reforzados de consentimiento.
+⚠️ **La LFPDPPP de 2010 fue abrogada.** Rige la **nueva ley (DOF 20-mar-2025)**; el **INAI
+desapareció** y la autoridad es la Secretaría Anticorrupción y Buen Gobierno. Cualquier plantilla
+que mencione al INAI está desactualizada.
 
-**Mitigación de diseño:** el formulario **no capta datos de salud**. Solo nombre, correo, teléfono,
-servicio de interés y un mensaje libre explícitamente acotado. El aviso debe incluir: identidad y
-domicilio del responsable, finalidades, medios para ejercer derechos ARCO, y transferencias (Resend
-procesa el correo fuera de México — hay que declararlo).
+**Mitigación de diseño (confirmada como correcta):** el formulario **no capta datos de salud**.
+Los datos sensibles exigen consentimiento expreso por escrito con firma y sus sanciones se duplican;
+al no captarlos, operamos con datos ordinarios y consentimiento tácito válido.
+
+**Dos fugas que el diseño debe cerrar:**
+1. El campo "servicio de interés" debe tener opciones **genéricas y no clínicas** — "Medicina
+   estética", no "tratamiento de acné". Una opción clínica revela estado de salud.
+2. El campo de mensaje libre necesita **microcopy visible**: *"Por tu privacidad, no incluyas
+   información sobre tu salud o padecimientos"*, más límite de caracteres y política de supresión.
+
+🔴 **CORRECCIÓN:** este blueprint decía antes que había que declarar una transferencia internacional
+por usar Resend. **Es incorrecto.** El art. 3 fr. XX excluye del concepto de transferencia la
+comunicación a la **persona encargada**, y Resend y Vercel son encargados (tratan datos por cuenta
+de la responsable, sin finalidad propia). Lo exigible es aceptar y archivar sus **DPA** (art. 13),
+medidas de seguridad (art. 18) y procedimiento de notificación de vulneraciones (art. 19).
 
 ### 8.2 Publicidad de servicios médicos (COFEPRIS)
 
-La publicidad de servicios de salud en México está regulada por la Ley General de Salud y su
-Reglamento en materia de publicidad. Zonas sensibles para este sitio:
+**Se requieren DOS trámites, no uno.** La exención de "servicios otorgados en forma individual"
+existe sólo para servicios de salud (art. 79 fr. I RLGSMP); la fracción VI, embellecimiento, **no la
+tiene**. Que la doctora sea persona física no la exime del permiso para la parte estética.
 
-- **Antes/después:** las imágenes comparativas de pacientes son el área más restringida.
-- **Testimonios:** requieren consentimiento y no deben prometer resultados.
-- **Claims:** nada de "resultados garantizados", "sin riesgos", "permanente".
-- El número de **Cofepris (2623032002A00011)** debe mostrarse; verificar con la doctora si además
-  requiere permiso de publicidad y si ese folio es del establecimiento o de otro trámite.
+| Sección | Trámite | Costo |
+|---|---|---|
+| Home, Sobre mí, Contacto, Blog, medicina general | **Aviso** (`COFEPRIS-02-002-A`) | Gratuito |
+| Servicios estéticos | **Permiso** (`COFEPRIS-02-001-A`) | Con costo |
 
-**Mitigación de diseño:** `BeforeAfter` y `Testimonials` se construyen completos pero detrás de
-**feature flags apagadas por defecto** (`NEXT_PUBLIC_FEATURE_BEFORE_AFTER=false`). El código queda
-listo; encender la sección es una decisión de la doctora una vez que confirme (a) consentimiento
-firmado de cada paciente mostrado y (b) qué permite la normativa.
+⚠️ El aviso se presenta **dentro de los 5 días PREVIOS** a publicar. Y el art. 83 obliga a un trámite
+nuevo ante cualquier cambio que varíe las características base del permiso — el contenido comercial
+debe ser estable.
+
+**Tres reglas que afectan el código, no sólo el copy:**
+
+1. **Cero verbos terapéuticos** (art. 63 último párrafo): prohibido atribuir cualidades preventivas,
+   rehabilitatorias o terapéuticas a procedimientos estéticos. La sustitución: actuar sobre **la
+   apariencia de** la condición, nunca sobre la condición. Documentado en `src/content/services.ts`.
+2. **Riesgos, contraindicaciones y efectos secundarios son obligatorios y VISIBLES** (art. 65 fr. II
+   y III) — no en modal ni acordeón colapsado. Es arquitectura de información. Implementado como
+   `MandatoryDisclosure` requerido en el tipo `Service`, con `isPublishable()` como guardia.
+3. **Cero marcas** de medicamento o dispositivo (Botox®, Juvederm…): se describe el servicio, no el
+   producto.
+
+🟠 **Bloqueante de nomenclatura:** la LGS art. 310 restringe la publicidad de medicamentos de
+prescripción a población general. Hay argumento razonable de que anunciar *el servicio* no es
+anunciar *el medicamento*, pero debe validarlo un abogado — **antes de que las URLs se indexen**,
+porque cambiaría los slugs.
+
+**Antes/después:** además del consentimiento, la NOM-004 num. 5.5 exige **desidentificación** aunque
+el paciente autorice, y las imágenes deben someterse dentro del proyecto publicitario. Recomendación:
+**no incluirlas en v1**. `BeforeAfter` y `Testimonials` se construyen tras **feature flags apagadas**;
+el código queda listo y encenderlas es decisión del cliente con respaldo legal.
+
+**Testimonios:** publicar un testimonio equivale a que el anunciante haga esa afirmación (art. 11), y
+hay que poder comprobarla. Solución: testimonios sobre la **experiencia de atención**
+("me explicó con calma", "no me sentí presionada"), no sobre resultado clínico.
 
 ### 8.3 Aviso médico en el blog
 

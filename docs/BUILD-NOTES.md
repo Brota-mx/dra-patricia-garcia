@@ -520,3 +520,47 @@ Un mismo post puede tener slug distinto por idioma (`localeSlug`), igual que los
 sitemap agrupa por `_id` de Sanity para que el `hreflang` de cada artículo apunte a la URL traducida
 real — la misma lógica que ya resolvió `buildAlternates()` para rutas estáticas, extendida a
 contenido dinámico.
+
+## Fase 10 · Legal (2026-07-21)
+
+### Aviso de Privacidad real, fundamentado en la LFPDPPP vigente (no la de 2010)
+
+El texto vive en `src/content/legalNotice.ts` (secciones tipadas, bilingües) y se renderiza en
+`app/[locale]/aviso-de-privacidad/page.tsx`, que reemplaza el `PagePlaceholder` de la Fase 0. Se quitó
+el `noindex`: es texto legal público, no una página "próximamente". Fundamentado en
+`docs/investigacion/compliance-publicidad.md` — identidad del responsable (nombre, especialidad,
+Cofepris), qué datos se recaban (sin datos sensibles), finalidades, encargados (Resend y Vercel, sin
+que constituya transferencia), ejercicio de derechos por WhatsApp/formulario, y la autoridad correcta
+(Secretaría Anticorrupción y Buen Gobierno — el INAI desapareció con la ley de 2010, abrogada).
+
+🔴 **Esto no es asesoría legal.** El propio archivo de contenido lo señala: antes de ir a producción
+un abogado debe revisar el texto, en particular en cuanto llegue el domicilio completo del
+consultorio (hoy `clinic.address` es `null`; la sección de identidad se remite a WhatsApp con el
+mismo patrón de "omitir, nunca inventar" del resto del sitio).
+
+### Bug de zona horaria en la fecha de "última actualización"
+
+`new Date("2026-07-21")` se interpreta como medianoche UTC. Formatear esa fecha en **cualquier** huso
+horario detrás de UTC —incluido `America/Cancun`, el del consultorio— la corre un día hacia atrás
+("20 de julio" en vez de "21"). Detectado al verificar la página en el navegador antes de dar la fase
+por cerrada. Solución: forzar `timeZone: "UTC"` en `toLocaleDateString()`, porque la fuente es una
+fecha calendario sin hora, no un instante real que deba convertirse al huso del lector.
+
+### Footer: cédula/responsable sanitario visibles en las 5 rutas del sitio
+
+El art. 83 LGS y el art. 19 RLGSMP exigen expresar en la publicidad la institución que expidió el
+título y quién es responsable sanitario — y debe ir visible, no escondido en una subpágina. El footer
+ya mostraba Cofepris e IPN desde la Fase 2; se agregó el título profesional (`practitioner.title`) y
+una línea "Responsable sanitario". La cédula profesional sigue pendiente (`practitioner.license` es
+`null`, TODO(cliente)) y aparecerá sola cuando llegue el dato, mismo patrón que en `/sobre-mi`.
+
+### Revisión de claims: sin hallazgos nuevos
+
+Se corrió una búsqueda dirigida (verbos terapéuticos, superlativos, promesas de resultado, marcas de
+medicamento) sobre todo `src/content`, `src/messages` y `src/components`. Los únicos resultados fueron
+los propios comentarios de `content/services.ts` que documentan la regla — el copy ya cumplía desde
+la Fase 3/5, cuando se redactó siguiendo `docs/investigacion/compliance-publicidad.md` desde el
+origen. El aviso médico en artículos del blog (`blogPage.medicalDisclaimer`) y la divulgación
+obligatoria en servicios estéticos (`MandatoryDisclosureSection`) ya estaban resueltos en Fases 5 y 9.
+
+`pnpm build/typecheck/lint/audit/check:contrast` en verde.

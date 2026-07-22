@@ -48,6 +48,7 @@
     "contactTitle": "Contact",
     "legalTitle": "Legal",
     "followUs": "Follow us",
+    "responsibleLabel": "Medical director:",
     "rights": "All rights reserved.",
     "addressPending": "Address available via WhatsApp",
     "hoursPending": "Hours available via WhatsApp"
@@ -98,7 +99,13 @@
     "about": { "title": "About", "intro": "Coming soon." },
     "blog": { "title": "Blog", "intro": "Coming soon." },
     "contact": { "title": "Contact", "intro": "Message me on WhatsApp, book online, or use the form. You'll hear back from me, not a bot." },
-    "privacy": { "title": "Privacy Policy", "intro": "Coming soon." }
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "How we handle your personal data when you visit this site or contact us through it.",
+      "lastUpdated": "Last updated: {date}",
+      "rightsCta": "Want to exercise any of these rights, or have a question about your data? Reach out.",
+      "rightsCtaButton": "Go to contact"
+    }
   },
   "blogPage": {
     "eyebrow": "Blog",

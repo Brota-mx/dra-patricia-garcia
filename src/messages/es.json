@@ -100,6 +100,15 @@
     "contact": { "title": "Contacto", "intro": "Escríbeme por WhatsApp, agenda en línea o usa el formulario. Te respondo yo, no un bot." },
     "privacy": { "title": "Aviso de Privacidad", "intro": "Próximamente." }
   },
+  "blogPage": {
+    "eyebrow": "Blog",
+    "title": "Blog",
+    "lead": "Artículos sobre medicina general, cuidado de la piel y medicina estética, escritos con criterio médico — no reemplazan una consulta.",
+    "empty": "Todavía no hay artículos publicados. Vuelve pronto.",
+    "readArticle": "Leer artículo",
+    "backToBlog": "Volver al blog",
+    "medicalDisclaimer": "Este contenido es informativo y no sustituye una consulta médica. Los riesgos y contraindicaciones que apliquen a tu caso se revisan en consulta antes de decidir nada."
+  },
   "contactPage": {
     "eyebrow": "Contacto",
     "title": "Hablemos antes de que decidas algo",

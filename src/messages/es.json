@@ -97,8 +97,55 @@
     "services": { "title": "Servicios", "intro": "Próximamente." },
     "about": { "title": "Sobre mí", "intro": "Próximamente." },
     "blog": { "title": "Blog", "intro": "Próximamente." },
-    "contact": { "title": "Contacto", "intro": "Próximamente." },
+    "contact": { "title": "Contacto", "intro": "Escríbeme por WhatsApp, agenda en línea o usa el formulario. Te respondo yo, no un bot." },
     "privacy": { "title": "Aviso de Privacidad", "intro": "Próximamente." }
+  },
+  "contactPage": {
+    "eyebrow": "Contacto",
+    "title": "Hablemos antes de que decidas algo",
+    "lead": "Puedes escribirme por WhatsApp, agendar en línea o dejarme tus datos aquí abajo — lo que te acomode. No hay presión ni compromiso.",
+    "formTitle": "Escríbeme",
+    "calTitle": "Agenda en línea",
+    "calPending": "La agenda en línea está por habilitarse. Mientras tanto, escríbeme por WhatsApp y coordinamos tu cita.",
+    "hoursTitle": "Horario de atención",
+    "hoursPending": "Te confirmo el horario disponible por WhatsApp.",
+    "formUnavailable": "El formulario está terminando de configurarse. Mientras tanto, escríbeme directo por WhatsApp."
+  },
+  "contactForm": {
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Correo",
+    "emailPlaceholder": "tu@correo.com",
+    "phoneLabel": "Teléfono (opcional)",
+    "phonePlaceholder": "10 dígitos",
+    "serviceLabel": "¿Qué te interesa?",
+    "serviceOptions": {
+      "general-medicine": "Medicina general",
+      "skincare": "Cuidado de la piel",
+      "other": "Otro / no estoy segura"
+    },
+    "messageLabel": "Cuéntame brevemente qué buscas",
+    "messagePlaceholder": "Por ejemplo: quisiera agendar una valoración para...",
+    "messageCounter": "{count}/300",
+    "privacyNote": "Por tu privacidad, no incluyas datos de salud ni detalles médicos aquí — eso lo revisamos en consulta. Este formulario solo recopila lo necesario para contactarte.",
+    "privacyLinkLabel": "Aviso de Privacidad",
+    "submit": "Enviar mensaje",
+    "submitting": "Enviando…",
+    "successTitle": "Mensaje enviado",
+    "successBody": "Gracias — te respondo lo antes posible. Si es urgente, escríbeme por WhatsApp.",
+    "errorGeneric": "No se pudo enviar el mensaje. Intenta de nuevo o escríbeme por WhatsApp.",
+    "errorRateLimit": "Demasiados intentos. Espera unos minutos e intenta de nuevo.",
+    "errorCaptcha": "No se pudo verificar que no eres un bot. Recarga la página e intenta de nuevo.",
+    "validation": {
+      "nameRequired": "Escribe tu nombre.",
+      "nameTooLong": "Máximo 100 caracteres.",
+      "emailInvalid": "Escribe un correo válido.",
+      "messageRequired": "Cuéntame brevemente qué buscas.",
+      "messageTooShort": "Necesito un poco más de contexto (mínimo 10 caracteres).",
+      "messageTooLong": "Máximo 300 caracteres.",
+      "serviceRequired": "Selecciona una opción.",
+      "captchaRequired": "Confirma que no eres un bot."
+    }
   },
   "notFound": {
     "title": "Página no encontrada",

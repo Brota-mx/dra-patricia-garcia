@@ -24,6 +24,9 @@ export const routing = defineRouting({
     },
     "/sobre-mi": { es: "/sobre-mi", en: "/about" },
     "/blog": "/blog",
+    // El slug de artículo, como el de servicio, viaja tal cual: cada post
+    // define su slug por idioma en Sanity (schema localeSlug).
+    "/blog/[slug]": "/blog/[slug]",
     "/contacto": { es: "/contacto", en: "/contact" },
     "/aviso-de-privacidad": {
       es: "/aviso-de-privacidad",

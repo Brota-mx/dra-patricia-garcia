@@ -100,6 +100,15 @@
     "contact": { "title": "Contact", "intro": "Message me on WhatsApp, book online, or use the form. You'll hear back from me, not a bot." },
     "privacy": { "title": "Privacy Policy", "intro": "Coming soon." }
   },
+  "blogPage": {
+    "eyebrow": "Blog",
+    "title": "Blog",
+    "lead": "Articles on general medicine, skincare, and aesthetic medicine, written with medical judgment — they don't replace a consultation.",
+    "empty": "No articles published yet. Check back soon.",
+    "readArticle": "Read article",
+    "backToBlog": "Back to blog",
+    "medicalDisclaimer": "This content is informational and does not replace a medical consultation. The risks and contraindications that apply to your case are reviewed in consultation before deciding anything."
+  },
   "contactPage": {
     "eyebrow": "Contact",
     "title": "Let's talk before you decide anything",

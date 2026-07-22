@@ -415,3 +415,108 @@ llaves de prueba oficiales):
 **Pendiente de verificar con credenciales reales** (Jesús, al configurar Resend/Upstash en Vercel):
 límite de tasa alcanzado (**429** tras 4 envíos en 10 min) y envío real de correo de punta a punta
 (**200** con el correo efectivamente recibido en `CONTACT_TO_EMAIL`).
+
+---
+
+## Fase 9 · Blog con Sanity (2026-07-21)
+
+**Estado:** ✅ código y Studio completos y funcionales. **Sin cuenta real de Sanity** (pendiente de
+crear — ver Estado - Patricia Garcia.md), así que el blog corre en modo degradado: build en verde,
+`/blog` muestra el estado vacío, `/studio` sirve pero no puede conectar. Todo queda listo para que,
+en cuanto Jesús cree la cuenta y cargue las credenciales, el blog funcione sin tocar código.
+
+### Modelo bilingüe: localeString/localeSlug/localeBlockContent
+
+Igual que `content/services.ts` en el sitio, cada campo visible del post vive en `{es, en}` — nunca
+un solo idioma con fallback. Se definieron 3 tipos de objeto reutilizables en
+`sanity/schemas/objects/` (`localeString`, `localeText`, `localeSlug`, `localeBlockContent`) en vez de
+duplicar la validación en cada campo. `localeSlug` replica el patrón de slugs traducidos de
+`i18n/routing.ts`: un mismo artículo puede vivir en `/es/blog/mito-vs-realidad...` y
+`/en/blog/myth-vs-reality...`, y el GROQ de `lib/sanity.ts` filtra por `slug[$locale]` — un artículo
+sin traducción completa en un idioma simplemente no aparece en ese idioma (mismo principio que
+`isPublishable()` en types/content.ts).
+
+### Fail-closed suave, no fail-closed duro
+
+A diferencia de `/api/contact` (503 real sin credenciales, porque ahí hay un envío que puede fallar a
+medias), el blog es contenido estático de lectura: sin `NEXT_PUBLIC_SANITY_PROJECT_ID`/`_DATASET`,
+`getSanityClient()` devuelve `null` y todo lector (`getPosts`, `getPostBySlug`, `getPostSlugs`) cae a
+`[]`/`null` en vez de tronar. El build entero (`pnpm build`) pasa sin cuenta real — verificado.
+
+### `/blog` decide su propio `noindex`, igual que los servicios estéticos
+
+En vez de un TODO manual para quitar el `noindex` cuando haya contenido, `generateMetadata` calcula
+`robots: { index: posts.length > 0, follow: true }` en cada request — un sitio de salud (YMYL) no
+gana nada indexando una sección vacía. El sitemap sigue el mismo criterio: sin posts, `/blog` ni
+siquiera aparece en `sitemap.xml` (mismo principio que los procedimientos estéticos sin divulgación:
+no se indexa lo que no tiene contenido real). En cuanto haya al menos un artículo, ambos se activan
+solos.
+
+### El Studio necesita su propio `<html>` — es la única excepción a la regla de CLAUDE.md
+
+`src/app/studio/layout.tsx` renderiza `<html>/<body>` propios, fuera de `[locale]`. La regla "sólo
+`[locale]/layout.tsx` renderiza `<html>`" es sobre las rutas del sitio público (next-intl v4 lo exige);
+el Studio es un documento HTML completamente aparte, sin i18n ni Header/Footer. El middleware ya
+excluía `studio` en su matcher desde la Fase 0 — se scaffoldeó anticipando esta fase.
+
+Con `NEXT_PUBLIC_SANITY_PROJECT_ID` vacío, `sanity.config.ts` usa un `projectId` placeholder con
+formato válido (`"placeholder"`) para que `defineConfig()` no truene en build — Sanity valida el
+*formato* del ID inmediatamente, no si el proyecto existe. Verificado en `pnpm dev`: `/studio` sirve
+200, muestra la pantalla nativa de Sanity "Connect this studio to your project" (el `CorsOriginError`
+en consola es del intento fallido de autenticar contra un proyecto que no existe — capturado por el
+`ErrorBoundary` de Sanity, no rompe la página). Se resuelve solo con credenciales reales.
+
+### 🔴 Bug de dependencias en `sanity@4.22.0`, no en nuestro código
+
+El build falló al agregar `/studio` con un error de webpack:
+`'compileSchemaDefinitionToPortableTextMemberSchemaTypes' is not exported from '@portabletext/sanity-bridge'`.
+No es un error del código de esta fase: `sanity@4.22.0` depende de `@portabletext/editor@3.3.19`, que
+declara `peerDependency: @portabletext/sanity-bridge@^1.2.14` — pero el árbol de pnpm resolvía
+`3.2.2` para satisfacerlo (otro paquete del propio `sanity` pide `^3.2.0`), y esa versión no expone
+las funciones que `@portabletext/editor` necesita. Es la última versión estable de la línea 4.x
+(`4.22.0` — Sanity ya publica 6.x en release estable), así que no había patch que lo arreglara.
+**Solución:** `pnpm.overrides` fijando `"@portabletext/sanity-bridge": "1.2.14"` en todo el árbol —
+mismo principio que el override de `sharp` en la Fase 8: cuando el conflicto es de versiones internas
+de un paquete, se fuerza la versión compatible en vez de esperar a que el mantenedor lo arregle.
+`pnpm audit` sigue en **0 vulnerabilidades** tras el cambio.
+
+### Portable Text: `next-sanity` ya re-exporta `@portabletext/react`
+
+No hizo falta agregar `@portabletext/react` como dependencia directa: `next-sanity@11.6.13` hace
+`export * from "@portabletext/react"`, así que `PortableText` y el tipo `PortableTextComponents` se
+importan directo de `"next-sanity"`. Sí se agregó `@portabletext/types` como dependencia directa
+(antes sólo transitiva) porque se usa su tipo `PortableTextBlock` en `types/blog.ts` — bajo pnpm
+estricto, un tipo transitivo no es importable desde el código propio sin declararlo.
+
+### Portadas y foto de autor: `null` hasta que se suba el asset real
+
+`coverImage` es requerido en el schema de Studio (bloquea publicar sin portada), pero el tipo
+`PostSummary.coverImage` en el código es `(BlogImage & { alt }) | null` — mismo principio de
+"omitir, nunca inventar" que el resto del sitio. `scripts/seed-sanity.mjs` siembra los 6 artículos
+**sin** `coverImage` (subir una imagen por API requiere `client.assets.upload()` con el archivo real,
+no algo que se pueda sembrar a mano) y lo deja como `TODO(cliente)` explícito en el propio script.
+
+### Contenido sembrado: 6 artículos, escritos — no reciclados de IG
+
+🔴 **No se pudo iniciar sesión en Instagram** (fuera de alcance, igual que en la Fase 0) para tomar los
+captions reales de @doctorapatga y reescribirlos. `scripts/seed-sanity.mjs` siembra 6 artículos
+**originales** sobre los mismos temas que ya sostienen el resto del sitio (mito vs. realidad de
+relleno de labios, qué esperar en la primera valoración de toxina botulínica, skin boosters
+explicados, protector solar mineral en cenotes, cuándo ver a un médico general como turista/expat, y
+un mito vs. realidad general de medicina estética) — con la misma guardia de cumplimiento que
+`content/services.ts` (cero verbos terapéuticos, cero marcas, cero promesas de resultado). El script
+es idempotente (IDs fijos, `createOrReplace`) y requiere `SANITY_API_WRITE_TOKEN` sólo en local:
+
+```
+node --env-file=.env.local scripts/seed-sanity.mjs
+```
+
+**Pendiente antes de publicar de verdad:** revisar estos 6 contra los posts reales de mejor
+desempeño del feed cuando la doctora dé acceso, y subir una portada por artículo desde `/studio`.
+
+### Slugs de artículo en el sitemap: agrupados por `_id`, no por idioma
+
+Un mismo post puede tener slug distinto por idioma (`localeSlug`), igual que los servicios. El
+sitemap agrupa por `_id` de Sanity para que el `hreflang` de cada artículo apunte a la URL traducida
+real — la misma lógica que ya resolvió `buildAlternates()` para rutas estáticas, extendida a
+contenido dinámico.

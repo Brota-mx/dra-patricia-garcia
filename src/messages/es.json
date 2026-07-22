@@ -48,6 +48,7 @@
     "contactTitle": "Contacto",
     "legalTitle": "Legal",
     "followUs": "Síguenos",
+    "responsibleLabel": "Responsable sanitario:",
     "rights": "Todos los derechos reservados.",
     "addressPending": "Dirección disponible por WhatsApp",
     "hoursPending": "Horarios disponibles por WhatsApp"
@@ -98,7 +99,13 @@
     "about": { "title": "Sobre mí", "intro": "Próximamente." },
     "blog": { "title": "Blog", "intro": "Próximamente." },
     "contact": { "title": "Contacto", "intro": "Escríbeme por WhatsApp, agenda en línea o usa el formulario. Te respondo yo, no un bot." },
-    "privacy": { "title": "Aviso de Privacidad", "intro": "Próximamente." }
+    "privacy": {
+      "title": "Aviso de Privacidad",
+      "intro": "Cómo tratamos tus datos personales cuando visitas este sitio o nos escribes a través de él.",
+      "lastUpdated": "Última actualización: {date}",
+      "rightsCta": "¿Quieres ejercer alguno de estos derechos o tienes una duda sobre tus datos? Escríbenos.",
+      "rightsCtaButton": "Ir a contacto"
+    }
   },
   "blogPage": {
     "eyebrow": "Blog",

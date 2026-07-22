@@ -1,10 +1,13 @@
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { mainNav, legalNav } from "@/content/navigation";
 import { clinic } from "@/content/clinic";
+import { practitioner } from "@/content/practitioner";
+import type { Locale } from "@/i18n/routing";
 
 export function Footer() {
   const t = useTranslations();
+  const locale = useLocale() as Locale;
   const year = new Date().getFullYear();
 
   return (
@@ -19,13 +22,21 @@ export function Footer() {
             <p className="mt-3 max-w-[40ch] text-sm text-muted">
               {t("footer.tagline")}
             </p>
-            {/* La credencial sanitaria es un activo de confianza: va visible,
-                no escondida en una página interna. */}
+            {/* Art. 83 LGS + art. 19 RLGSMP: la publicidad debe expresar la
+                institución que expidió el título, el número de cédula y quién
+                es responsable sanitario. Va visible en el footer de todas las
+                páginas, no escondida en una subpágina. */}
             <p className="mt-6 text-sm text-muted">
+              {practitioner.title[locale]}
+              {" · "}
               {t("credentials.cofeprisLabel")}{" "}
               <span className="text-ink">{clinic.cofepris}</span>
             </p>
             <p className="text-sm text-muted">{clinic.school}</p>
+            <p className="mt-1 text-sm text-muted">
+              {t("footer.responsibleLabel")}{" "}
+              <span className="text-ink">{clinic.name}</span>
+            </p>
           </div>
 
           {/* Navegación */}

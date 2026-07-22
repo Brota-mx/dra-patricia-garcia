@@ -8,14 +8,13 @@ import { siteUrl } from "@/lib/seo";
  * Solo se listan las rutas con contenido real. Las páginas que todavía son
  * marcador (`robots: noindex`) se agregan en su fase — un sitemap que declara
  * páginas vacías le pide a Google que indexe humo.
- *
- * TODO(Fase 10): agregar /aviso-de-privacidad al poblarse.
  */
 const publicRoutes: StaticPathname[] = [
   "/",
   "/servicios",
   "/sobre-mi",
   "/contacto",
+  "/aviso-de-privacidad",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -25,7 +24,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${base}${getPathname({ href, locale: routing.defaultLocale })}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: href === "/" ? 1 : 0.8,
+    // Texto legal: casi nunca es la página de entrada, así que no compite en
+    // prioridad con las páginas comerciales.
+    priority: href === "/" ? 1 : href === "/aviso-de-privacidad" ? 0.3 : 0.8,
     alternates: {
       languages: Object.fromEntries(
         routing.locales.map((locale) => [

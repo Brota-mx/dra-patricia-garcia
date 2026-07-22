@@ -97,8 +97,55 @@
     "services": { "title": "Services", "intro": "Coming soon." },
     "about": { "title": "About", "intro": "Coming soon." },
     "blog": { "title": "Blog", "intro": "Coming soon." },
-    "contact": { "title": "Contact", "intro": "Coming soon." },
+    "contact": { "title": "Contact", "intro": "Message me on WhatsApp, book online, or use the form. You'll hear back from me, not a bot." },
     "privacy": { "title": "Privacy Policy", "intro": "Coming soon." }
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Let's talk before you decide anything",
+    "lead": "Message me on WhatsApp, book online, or leave your details below — whatever works for you. No pressure, no commitment.",
+    "formTitle": "Message me",
+    "calTitle": "Book online",
+    "calPending": "Online booking is being set up. In the meantime, message me on WhatsApp and we'll coordinate your appointment.",
+    "hoursTitle": "Office hours",
+    "hoursPending": "I'll confirm available hours over WhatsApp.",
+    "formUnavailable": "The form is still being set up. In the meantime, message me directly on WhatsApp."
+  },
+  "contactForm": {
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@email.com",
+    "phoneLabel": "Phone (optional)",
+    "phonePlaceholder": "10 digits",
+    "serviceLabel": "What are you interested in?",
+    "serviceOptions": {
+      "general-medicine": "General medicine",
+      "skincare": "Skincare",
+      "other": "Other / not sure yet"
+    },
+    "messageLabel": "Briefly tell me what you're looking for",
+    "messagePlaceholder": "For example: I'd like to book an assessment for...",
+    "messageCounter": "{count}/300",
+    "privacyNote": "For your privacy, please don't include health data or medical details here — we'll go over that in consultation. This form only collects what's needed to contact you.",
+    "privacyLinkLabel": "Privacy Policy",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "successTitle": "Message sent",
+    "successBody": "Thanks — I'll get back to you as soon as I can. If it's urgent, message me on WhatsApp.",
+    "errorGeneric": "The message couldn't be sent. Try again or message me on WhatsApp.",
+    "errorRateLimit": "Too many attempts. Wait a few minutes and try again.",
+    "errorCaptcha": "We couldn't verify you're not a bot. Reload the page and try again.",
+    "validation": {
+      "nameRequired": "Enter your name.",
+      "nameTooLong": "100 characters max.",
+      "emailInvalid": "Enter a valid email.",
+      "messageRequired": "Briefly tell me what you're looking for.",
+      "messageTooShort": "I need a bit more context (10 characters minimum).",
+      "messageTooLong": "300 characters max.",
+      "serviceRequired": "Select an option.",
+      "captchaRequired": "Confirm you're not a bot."
+    }
   },
   "notFound": {
     "title": "Page not found",

@@ -8,10 +8,14 @@ import { siteUrl } from "@/lib/seo";
  * marcador (`robots: noindex`) se agregan en su fase — un sitemap que declara
  * páginas vacías le pide a Google que indexe humo.
  *
- * TODO(Fases 5,6,8,9,10): agregar /servicios, /sobre-mi, /contacto, /blog y
- * /aviso-de-privacidad conforme se pueblen.
+ * TODO(Fases 9,10): agregar /blog y /aviso-de-privacidad conforme se pueblen.
  */
-const publicRoutes: StaticPathname[] = ["/", "/servicios", "/sobre-mi"];
+const publicRoutes: StaticPathname[] = [
+  "/",
+  "/servicios",
+  "/sobre-mi",
+  "/contacto",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();

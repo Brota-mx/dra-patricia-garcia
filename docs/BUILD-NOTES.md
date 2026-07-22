@@ -340,3 +340,78 @@ contrasta. Por eso `practitioner.title` dice "Médica Cirujana" y el campo `trai
 `/es/sobre-mi` y `/en/about` → 200, **sin `noindex`** (se quitó el de la Fase 2, debe indexarse),
 JSON-LD `Physician` con `alumniOf` y `sameAs` al Instagram, y sitemap con las 3 rutas que ya tienen
 contenido real.
+
+---
+
+## Fase 8 · Contacto (2026-07-21)
+
+**Estado:** ✅ completa y funcional. Único endpoint dinámico del sitio.
+
+### Fail-closed de verdad, no solo documentado
+
+`POST /api/contact` exige las tres integraciones (Resend, Upstash, Turnstile) presentes o responde
+**503** sin intentar nada — es la regla de CLAUDE.md "Variables de entorno" llevada a código, no solo
+a un comentario. Se verificó en vivo: sin `.env.local`, el endpoint devuelve 503 real.
+
+### El formulario nunca pregunta por salud
+
+El desplegable "¿Qué te interesa?" ofrece opciones genéricas (medicina general, cuidado de la piel,
+otro) — nunca síntomas. El mensaje libre tiene tope de 300 caracteres con microcopy explícito
+pidiendo no incluir detalles clínicos. Es la regla no negociable 4 de CLAUDE.md aplicada al único
+punto del sitio que captura datos de un visitante.
+
+Las opciones del desplegable además siguen la misma guardia legal que ya existe para las páginas de
+servicio: sólo aparecen los servicios `isPublishable()` (medicina general, cuidado de la piel) más
+"otro". Los tres procedimientos estéticos sin divulgación obligatoria no se ofrecen como motivo de
+contacto, por la misma razón que no tienen página propia todavía.
+
+### Texto plano, no HTML — la inyección deja de ser un problema
+
+El correo se envía con `resend.emails.send({ text: ... })`, nunca `html`. Nada de lo que escribe un
+visitante se interpreta como marcado en ningún punto del flujo (ni en el correo, ni en la respuesta
+JSON, que nunca hace eco del input). Probado con `<script>`/`<img onerror>` en nombre y mensaje: pasa
+la validación sin rechazarse — no hace falta sanear lo que nunca se renderiza.
+
+### El honeypot no delata su propia existencia
+
+Un bot que rellena el campo oculto `company` recibe el mismo `200 { ok: true }` que un envío real —
+nunca un error distinto. Delatar la trampa en el cuerpo de la respuesta le enseñaría al bot a
+evitarla.
+
+### Gotcha de tipos: `z.input` vs `z.infer` con React Hook Form + Zod v4
+
+`zodResolver` espera el tipo de **entrada** del schema (lo que vive en los campos del formulario
+antes de validar), no el de **salida**. Con un campo opcional simple esto no importa porque ambos
+coinciden — pero en cuanto el schema tiene un `.transform()` o un `.default()`, entrada y salida
+divergen (uno los marca opcionales, el otro los vuelve requeridos-con-valor), y TypeScript rechaza el
+resolver con un error de tipos que no deja claro la causa real.
+
+Solución: `useForm<T>()` debe tipar con `z.input<typeof schema>`, no `z.infer<typeof schema>`.
+Aprendizaje replicable a cualquier formulario RHF + Zod del stack de Brota.
+
+### CVE de `sharp` resuelto con override, no con `--force`
+
+Durante esta fase apareció una alerta **alta** (CVE-2026-33327 y relacionados) en `sharp`, dependencia
+opcional de `next` para optimización de imágenes — nada que ver con el código de esta fase, pero la
+regla 9 de CLAUDE.md aplica a cualquier alerta que aparezca, no sólo a las que introduce el cambio en
+curso. Se fijó `sharp@^0.35.3` (última patch de la línea parcheada) en `pnpm.overrides` → `pnpm audit`
+vuelve a dar **0 vulnerabilidades**.
+
+### Qué se verificó y qué queda pendiente de credenciales reales
+
+Sin cuenta real de Resend/Upstash/Turnstile en este entorno, se probaron 8 casos contra el endpoint
+real (7 en vivo contra el servidor de desarrollo, 1 contra el endpoint público de Cloudflare con sus
+llaves de prueba oficiales):
+
+1. Variables de entorno ausentes → **503**
+2. JSON malformado → **400** `invalid_json`
+3. Campos vacíos/inválidos → **400** `invalid_input` con el listado exacto de campos
+4. Payload de 20 KB → **413** `payload_too_large`
+5. Honeypot relleno → **200** `{ ok: true }` falso, sin intentar nada más
+6. `<script>`/`<img onerror>` en nombre y mensaje → pasa la validación, no se rechaza ni se renderiza
+7. Turnstile con secreto de prueba "siempre pasa" (`1x0000...AA`) → `success: true` contra la API real
+8. Turnstile con secreto de prueba "siempre falla" (`2x0000...AA`) → `success: false` contra la API real
+
+**Pendiente de verificar con credenciales reales** (Jesús, al configurar Resend/Upstash en Vercel):
+límite de tasa alcanzado (**429** tras 4 envíos en 10 min) y envío real de correo de punta a punta
+(**200** con el correo efectivamente recibido en `CONTACT_TO_EMAIL`).

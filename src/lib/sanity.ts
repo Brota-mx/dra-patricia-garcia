@@ -72,6 +72,7 @@ const postDetailFields = /* groq */ `
   ${postSummaryFields},
   "body": body[$locale],
   medicalDisclaimer,
+  "seoKeywords": seoKeywords[$locale],
   author-> {
     name,
     "credentials": credentials[$locale],

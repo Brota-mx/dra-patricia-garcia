@@ -6,6 +6,7 @@ import { services } from "@/content/services";
 import { isPublishable } from "@/types/content";
 import { getPathname } from "@/i18n/navigation";
 import { buildAlternates } from "@/lib/seo";
+import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -20,6 +21,7 @@ export async function generateMetadata({
     title: t("indexTitle"),
     description: t("indexLead"),
     alternates: buildAlternates("/servicios", locale),
+    keywords: seoKeywords.services[locale],
     // Ya tiene contenido real: se quita el noindex de la Fase 2.
   };
 }

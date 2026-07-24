@@ -564,3 +564,96 @@ origen. El aviso médico en artículos del blog (`blogPage.medicalDisclaimer`) y
 obligatoria en servicios estéticos (`MandatoryDisclosureSection`) ya estaban resueltos en Fases 5 y 9.
 
 `pnpm build/typecheck/lint/audit/check:contrast` en verde.
+
+## Fase 11 · SEO completo (2026-07-24)
+
+**Estado:** ✅ completa. Build, typecheck, lint, audit y contraste en verde. Verificado en runtime
+(ES y EN) contra el servidor de desarrollo.
+
+### El grafo de entidades: `MedicalClinic` en la home, `Physician` en `/sobre-mi`, y un enlace entre ambos
+
+Hasta la Fase 6 el sitio sólo declaraba la entidad **persona** (`Physician` en `/sobre-mi`). Faltaba
+la entidad **negocio** — la que Google usa para asociar el dominio con un `LocalBusiness` real y para
+resolver búsquedas de intención local ("médico general playa del carmen"). Se agregó
+`localBusinessJsonLd()` en `lib/seo.ts`: JSON-LD `@type: ["MedicalClinic", "LocalBusiness"]` en la
+home (es la URL raíz — mismo criterio que usa Google para asociar un negocio con un dominio), con un
+nodo `employee` que apunta al `Physician`, y el `Physician` ahora declara `worksFor` de vuelta hacia
+el `MedicalClinic`. Dos entidades separadas pero conectadas, no una sola mezclada — así lo modela
+schema.org y así lo consumen los validadores de Google.
+
+**Degradación de campos, mismo principio que el resto del sitio:** `clinic.address`, `clinic.geo` y
+`clinic.hours` siguen en `null` (`TODO(cliente)`). El JSON-LD omite `streetAddress`,
+`postalCode`, `geo` y `openingHoursSpecification` por completo mientras falten — nunca un valor
+inventado. `address.addressLocality/addressRegion/addressCountry` sí se declaran siempre: son datos
+ya conocidos (Playa del Carmen, Quintana Roo, MX) y no dependen del domicilio exacto.
+
+### `MedicalProcedure` ahora declara quién lo ofrece y dónde
+
+Las páginas de servicio (Fase 5) ya tenían JSON-LD `MedicalProcedure`, pero sin `provider` ni
+`areaServed` — un procedimiento "flotante" sin clínica asociada. Se agregó ambos, reutilizando el
+mismo patrón `{ "@type": "MedicalClinic", name, url }` que la home.
+
+### Keywords locales: nunca la marca del medicamento, ni siquiera en metadata
+
+`content/seoKeywords.ts` centraliza los términos de búsqueda por página (`metadata.keywords`). La
+decisión que vale la pena documentar: **"botox" no aparece en ningún lado**, ni en home ni en el
+servicio de toxina botulínica, aunque el propio `BLUEPRINT.md` (visión del proyecto) cita
+literalmente "botox playa del carmen" como el término que un paciente busca a las 11 de la noche. La
+razón: la duda de nomenclatura de la toxina botulínica ante COFEPRIS (LGS art. 310, marcada 🟠 en
+`Plan - Patricia Garcia.md`, **sin resolver con abogado**) es exactamente sobre publicitar el nombre
+de un medicamento de prescripción a población general. Meter la marca en `<meta name="keywords">`
+sería reintroducir ese mismo riesgo por otra puerta — el hecho de que no sea copy visible no lo hace
+menos "publicidad" a ojos del reglamento. Se usa "toxina botulínica" / "botulinum toxin" en su lugar,
+consistente con el nombre que ya usa `content/services.ts`.
+
+### `seoKeywords` de Sanity: bug real encontrado y corregido, no sólo una mejora
+
+Al conectar `post.seoKeywords` a `metadata.keywords` del artículo, apareció un bug de la Fase 9: el
+campo en el schema de Sanity era un `array` plano (no localizado), y `scripts/seed-sanity.mjs`
+escribía `seoKeywords: p.seoKeywords.es` — **las keywords en español, sin importar el idioma del
+artículo**. Un artículo en inglés iba a exponer keywords en español en su metadata. Se creó el objeto
+`localeStringList` (mismo patrón que `localeString`/`localeText`) y se migró el campo a
+`{ es: string[], en: string[] }`; el seed ahora escribe ambos idiomas y la query GROQ filtra por
+`$locale`. El campo sigue siendo opcional — un artículo sin keywords cae al set estático de
+`seoKeywords.blog` en `content/seoKeywords.ts`.
+
+### `BlogPosting`: autor con `jobTitle`, imagen real cuando existe, sin inventar nada
+
+Se agregó `keywords` (join de `post.seoKeywords`), `image` (sólo si ya se subió portada real desde
+`/studio` — sigue siendo `null` hasta que Jesús cargue la cuenta de Sanity), `inLanguage` y
+`mainEntityOfPage`. El nodo `author` ahora lleva `jobTitle: post.author.credentials` — mismo texto que
+ya se muestra en la tarjeta de autor bajo el artículo, ninguna credencial nueva inventada.
+
+### OG dinámico por locale con `next/og`, sin logo todavía
+
+`src/app/[locale]/opengraph-image.tsx` genera la imagen Open Graph por defecto de cada idioma con
+`ImageResponse` (Satori): fondo `bone`, texto `ink`, eyebrow en `malva-deep` con "Playa del Carmen".
+**Colores en hex literal, no en variables de Tailwind** — Satori no lee custom properties CSS del
+`@theme` de globals.css, así que se copiaron los valores exactos documentados en CLAUDE.md. Sin logo
+vectorial (`work/` sólo tiene un JPG de 29 KB — mismo bloqueo que Fase 0), la imagen es tipografía
+sobre color de marca, no un render del isotipo. El artículo de blog sobrescribe este OG por defecto
+con su propia portada cuando existe (`openGraph.images` en `generateMetadata` de
+`blog/[slug]/page.tsx`) — Next da prioridad a la metadata explícita de la ruta sobre el archivo de
+convención heredado del segmento padre.
+
+Verificado en runtime: `<meta property="og:image">` se genera solo (Next conecta el archivo de
+convención automáticamente), y `/es/opengraph-image` / `/en/opengraph-image` responden 200 con las
+dimensiones correctas (1200×630) y texto localizado distinto por idioma.
+
+### 🔴 Lo que NO se pudo verificar: Rich Results Test de Google
+
+El blueprint pide validar con el Rich Results Test de Google antes de pedir merge. **No es posible
+en este entorno**: la herramienta de Google necesita una URL pública, y el sitio sólo existe en
+`localhost` (el repo remoto y el proyecto de Vercel siguen sin crearse — ver
+`Estado - Patricia Garcia.md` §⚠️). Lo que sí se verificó: los cuatro JSON-LD (`MedicalClinic`,
+`Physician`, `MedicalProcedure`, `BlogPosting`) son JSON válido, contra el shape documentado de
+schema.org, extraídos y leídos directamente del DOM renderizado en ES y EN. **Pendiente real:**
+correr el Rich Results Test contra el primer preview de Vercel, en cuanto exista.
+
+### CVE alto en Next.js resuelto de paso, sin relación con el código de esta fase
+
+`pnpm audit` encontró **9 vulnerabilidades (3 high, 6 moderate)** al iniciar la fase: 8 en `next`
+(rango `<15.5.21`, incluyendo un DoS de Server Actions) y 1 en `tar` (dependencia transitiva de
+`sanity > @sanity/export`). Regla 9 de CLAUDE.md — se subió `next` a **`15.5.21`** (última patch de
+la línea 15.5.x, no un salto de major) y se agregó `tar: "^7.5.22"` a `pnpm.overrides`. Se repitió
+build/typecheck completos tras el bump: sin regresiones. `pnpm audit` → **0 vulnerabilidades**.

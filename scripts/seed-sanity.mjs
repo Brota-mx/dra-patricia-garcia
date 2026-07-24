@@ -449,7 +449,10 @@ async function seed() {
       category: { _type: "reference", _ref: p.categoryId },
       author: { _type: "reference", _ref: author._id },
       publishedAt: new Date().toISOString(),
-      seoKeywords: p.seoKeywords.es,
+      // Bug corregido en la Fase 11: antes se escribía sólo `seoKeywords.es`
+      // para los dos idiomas porque el campo en Sanity era un array plano, no
+      // localizado. Con `localeStringList` cada idioma queda separado.
+      seoKeywords: p.seoKeywords,
       medicalDisclaimer: true,
     };
     await client.createOrReplace(doc);

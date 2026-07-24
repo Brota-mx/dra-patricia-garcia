@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPosts } from "@/lib/sanity";
 import { BlogCard } from "@/components/sections/BlogCard";
 import { buildAlternates } from "@/lib/seo";
+import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
 export const revalidate = 3600;
@@ -19,6 +20,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     alternates: buildAlternates("/blog", locale),
+    keywords: seoKeywords.blog[locale],
     // Una página de listado sin artículos no debe indexarse — un sitio de
     // salud (YMYL) no gana confianza mostrando una sección vacía a Google.
     // Se quita el noindex solo cuando hay al menos un artículo real.

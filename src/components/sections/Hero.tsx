@@ -19,28 +19,37 @@ export function Hero({ locale }: { locale: Locale }) {
   const t = useTranslations();
 
   return (
-    <section className="mx-auto max-w-[1200px] px-6 pt-16 pb-20 sm:pt-24">
-      <p className="eyebrow text-malva-deep">{t("hero.eyebrow")}</p>
+    <section className="mx-auto grid max-w-[1200px] gap-12 px-6 pt-16 pb-20 sm:pt-24 lg:grid-cols-[1fr_420px] lg:items-center lg:gap-16">
+      <div>
+        <p className="eyebrow text-malva-deep">{t("hero.eyebrow")}</p>
 
-      <h1 className="mt-5 max-w-[18ch] text-display sm:text-display-xl">
-        {t("hero.title")}
-      </h1>
+        <h1 className="mt-5 max-w-[18ch] text-display sm:text-display-xl">
+          {t("hero.title")}
+        </h1>
 
-      <p className="mt-6 max-w-[58ch] text-body-lg text-muted">
-        {t("hero.lead")}
-      </p>
+        <p className="mt-6 max-w-[58ch] text-body-lg text-muted">
+          {t("hero.lead")}
+        </p>
 
-      <div className="mt-10">
-        <BookingCTA
-          message={t("whatsapp.defaultMessage")}
-          source="hero"
-          fallbackHref={getPathname({ href: "/contacto", locale })}
-          secondaryHref={getPathname({ href: "/servicios", locale })}
-          secondaryLabel={t("hero.ctaSecondary")}
-        />
+        <div className="mt-10">
+          <BookingCTA
+            message={t("whatsapp.defaultMessage")}
+            source="hero"
+            fallbackHref={getPathname({ href: "/contacto", locale })}
+            secondaryHref={getPathname({ href: "/servicios", locale })}
+            secondaryLabel={t("hero.ctaSecondary")}
+          />
+        </div>
+
+        <p className="mt-6 text-sm text-muted">{t("hero.note")}</p>
       </div>
 
-      <p className="mt-6 text-sm text-muted">{t("hero.note")}</p>
+      {/* eslint-disable-next-line @next/next/no-img-element -- mismo patrón que el retrato de Sobre-mí: activo estático servido desde public/. */}
+      <img
+        src="/practitioner/dra-patricia-garcia-hero.jpg"
+        alt={t("hero.imageAlt")}
+        className="hidden aspect-[4/5] w-full rounded-card object-cover lg:block"
+      />
     </section>
   );
 }

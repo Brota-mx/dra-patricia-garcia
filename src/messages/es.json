@@ -22,7 +22,8 @@
     "lead": "Consulta de medicina general y procedimientos estéticos con valoración previa. El plan se define a partir de tus rasgos y de lo que buscas — y si algo no es adecuado para ti, te lo digo.",
     "cta": "Escribir por WhatsApp",
     "ctaSecondary": "Ver servicios",
-    "note": "Atención en español e inglés"
+    "note": "Atención en español e inglés",
+    "imageAlt": "Dra. Patricia García en su consultorio de Playa del Carmen"
   },
   "sections": {
     "servicesTitle": "Servicios",
@@ -72,7 +73,8 @@
     "backToServices": "Ver todos los servicios",
     "indexTitle": "Servicios",
     "indexLead": "Medicina general y procedimientos estéticos en Playa del Carmen. Cada procedimiento se valora en consulta antes de proponerse.",
-    "detailsPending": "Los detalles de este servicio se comparten en la valoración."
+    "detailsPending": "Los detalles de este servicio se comparten en la valoración.",
+    "indexImageAlt": "Dra. Patricia García explicando un procedimiento en consulta"
   },
   "about": {
     "eyebrow": "Sobre mí",

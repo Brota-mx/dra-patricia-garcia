@@ -37,10 +37,21 @@ export default async function ServicesPage({
 
   return (
     <main className="mx-auto max-w-[1200px] px-6 py-20">
-      <h1 className="text-display">{t("servicePage.indexTitle")}</h1>
-      <p className="mt-4 max-w-[58ch] text-body-lg text-muted">
-        {t("servicePage.indexLead")}
-      </p>
+      <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-center lg:gap-16">
+        <div>
+          <h1 className="text-display">{t("servicePage.indexTitle")}</h1>
+          <p className="mt-4 max-w-[58ch] text-body-lg text-muted">
+            {t("servicePage.indexLead")}
+          </p>
+        </div>
+
+        {/* eslint-disable-next-line @next/next/no-img-element -- mismo patrón que el retrato de Sobre-mí: activo estático servido desde public/. */}
+        <img
+          src="/practitioner/dra-patricia-garcia-consulta.jpg"
+          alt={t("servicePage.indexImageAlt")}
+          className="hidden aspect-[4/3] w-full rounded-card object-cover lg:block"
+        />
+      </div>
 
       <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => {

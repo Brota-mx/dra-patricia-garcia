@@ -22,7 +22,8 @@
     "lead": "General medicine consultations and aesthetic procedures, always with a prior assessment. The plan follows your features and what you're looking for — and if something isn't right for you, I'll say so.",
     "cta": "Message on WhatsApp",
     "ctaSecondary": "See services",
-    "note": "Consultations available in English and Spanish"
+    "note": "Consultations available in English and Spanish",
+    "imageAlt": "Dr. Patricia García in her Playa del Carmen practice"
   },
   "sections": {
     "servicesTitle": "Services",
@@ -72,7 +73,8 @@
     "backToServices": "See all services",
     "indexTitle": "Services",
     "indexLead": "General medicine and aesthetic procedures in Playa del Carmen. Every procedure is assessed in consultation before it's proposed.",
-    "detailsPending": "Details for this service are shared during your consultation."
+    "detailsPending": "Details for this service are shared during your consultation.",
+    "indexImageAlt": "Dr. Patricia García explaining a procedure during a consultation"
   },
   "about": {
     "eyebrow": "About",

@@ -52,8 +52,14 @@ export const practitioner = {
     Array<{ name: Localized; institution: string; year: string }>
   >,
 
-  /** TODO(cliente) — retrato profesional real. Nada de stock. */
-  portrait: null as PendingFromClinician<{ src: string; alt: Localized }>,
+  /** Retrato profesional real, de la sesión de fotos que entregó la doctora. */
+  portrait: {
+    src: "/practitioner/dra-patricia-garcia-portrait.jpg",
+    alt: {
+      es: "Dra. Patricia García, médica cirujana, en su consultorio",
+      en: "Dr. Patricia García, physician, in her practice",
+    },
+  } satisfies { src: string; alt: Localized },
 
   /** TODO(cliente) — año de inicio de práctica en Playa del Carmen. */
   practicingSince: null as PendingFromClinician<string>,

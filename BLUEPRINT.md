@@ -151,7 +151,6 @@ lucrecia/                              # carpeta local; repo: Brota-mx/dra-patri
       turnstile.ts                     # verificación server-side
       whatsapp.ts                      # constructor de deep links con mensaje pre-llenado
       seo.ts                           # helpers de metadata + JSON-LD
-      reporter.ts                      # reporter fail-open a Torre de Control
       flags.ts                         # feature flags (antes/después)
     types/
       index.ts
@@ -267,7 +266,6 @@ consulta de medicina general · asesoría y venta de dermocosmética (Colorescie
 4. Validación Zod del esquema completo.
 5. Sanitización — escapar HTML antes de construir el correo.
 6. Envío vía Resend al correo del consultorio.
-7. Reporte fail-open a Torre de Control (nunca bloquea la respuesta).
 
 **Respuestas:** `200 {ok:true}` · `400 {ok:false, error:"validation", fields:[…]}` ·
 `429 {ok:false, error:"rate_limit"}` · `503 {ok:false, error:"unavailable"}` cuando falten secretos
@@ -534,7 +532,9 @@ en ambos idiomas.
 
 **Fase 12 · Seguridad**
 CSP estática con permisos para Turnstile, Cal.com, Sanity CDN y Vercel. Headers de seguridad.
-Reporter fail-open a Torre de Control. **Correr `pnpm audit` y subir a la última patch de la línea.**
+Endpoint `/api/csp-report` que solo loguea a los logs de Vercel (sin dependencia externa — este
+proyecto es standalone de Brota Mx, sin Torre de Control, que es exclusiva de Grupo Galarza).
+**Correr `pnpm audit` y subir a la última patch de la línea.**
 **Entregable:** 0 vulnerabilidades, CSP sin romper el SSG.
 
 **Fase 13 · QA**
@@ -575,8 +575,6 @@ go-live. CI/CD: `main` → producción, PR → preview.
 | `TURNSTILE_SECRET_KEY` | Anti-bot (secreto) | dash.cloudflare.com |
 | `NEXT_PUBLIC_FEATURE_BEFORE_AFTER` | `false` hasta autorización legal | — |
 | `NEXT_PUBLIC_FEATURE_TESTIMONIALS` | `false` hasta autorización legal | — |
-| `TORRE_REPORTER_URL` | Torre de Control | Proyecto Torre |
-| `TORRE_REPORTER_TOKEN` | Torre de Control | Proyecto Torre |
 
 > 🔒 Los secretos se escriben **directo en Vercel o en el `.env.local`**. Nunca en el chat, nunca en
 > el repo, nunca en el vault. `.env.example` lleva solo nombres, jamás valores.
@@ -756,9 +754,8 @@ Ver `.env.example`. Sin `RESEND_API_KEY` / Upstash / Turnstile, `/api/contact` r
 4. **El formulario no capta datos de salud.** Diseño deliberado para no asumir obligaciones de datos sensibles.
 5. **Marca desde el asset real.** El logo en `work/` manda; el feed de Instagram aporta el acento.
    Ante duda de marca, preguntar — no inventar. *(Lección directa de Pagaza.)*
-6. **Reporter fail-open a Torre de Control desde el día 1.**
-7. **Una rama por fase**, con build y preview de Vercel en verde antes de pedir merge.
-8. **Móvil primero**, accesibilidad AA, Lighthouse ≥95.
+6. **Una rama por fase**, con build y preview de Vercel en verde antes de pedir merge.
+7. **Móvil primero**, accesibilidad AA, Lighthouse ≥95.
 
 ---
 
@@ -791,8 +788,8 @@ Ver `.env.example`. Sin `RESEND_API_KEY` / Upstash / Turnstile, `/api/contact` r
 ## 18. Relación con el Ecosistema
 
 **Standalone.** Repo propio, dataset de Sanity propio, proyecto de Vercel propio, sin datos compartidos
-con ningún otro proyecto de Brota o Galarza. Único punto de contacto: el **reporter fail-open** hacia
-la Torre de Control, que solo emite telemetría de salud del sitio.
+con ningún otro proyecto de Brota o Galarza, y sin telemetría hacia ningún sistema central — **Torre de
+Control es exclusiva de Grupo Galarza**, no aplica a Brota Mx.
 
 Es un cliente de agencia sin relación de dominio con Pagaza ni Latam Abogados. Lo que **sí** se comparte
 es el **patrón de arquitectura** de Pagaza (Next+i18n+formulario seguro), reusado por convención, no

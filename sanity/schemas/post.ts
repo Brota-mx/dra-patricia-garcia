@@ -85,8 +85,9 @@ export const post = defineType({
     defineField({
       name: "seoKeywords",
       title: "Palabras clave (SEO)",
-      type: "array",
-      of: [{ type: "string" }],
+      description:
+        "Opcional. Cada idioma es independiente — no se traduce automático, porque un término de búsqueda real en inglés casi nunca es la traducción literal del español.",
+      type: "localeStringList",
     }),
     defineField({
       name: "medicalDisclaimer",

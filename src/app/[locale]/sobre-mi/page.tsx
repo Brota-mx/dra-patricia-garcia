@@ -7,6 +7,7 @@ import { practitioner } from "@/content/practitioner";
 import { clinic } from "@/content/clinic";
 import { getPathname } from "@/i18n/navigation";
 import { buildAlternates, siteUrl } from "@/lib/seo";
+import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -21,6 +22,7 @@ export async function generateMetadata({
     title: t("eyebrow"),
     description: t("lead"),
     alternates: buildAlternates("/sobre-mi", locale),
+    keywords: seoKeywords.about[locale],
     // Se quita el noindex de la Fase 2: ya tiene contenido real. Es la página
     // que más pesa para E-E-A-T en salud, así que debe indexarse.
   };
@@ -49,6 +51,14 @@ export default async function AboutPage({
     medicalSpecialty: ["PrimaryCare", "PlasticSurgery"],
     areaServed: { "@type": "City", name: clinic.city },
     sameAs: [practitioner.instagram],
+    // Conecta esta entidad con el `MedicalClinic` de la home (Fase 11): la
+    // misma persona, descrita como empleado en un JSON-LD y como profesional
+    // en el otro — construye el grafo en vez de dos entidades sueltas.
+    worksFor: {
+      "@type": "MedicalClinic",
+      name: clinic.name,
+      url: `${siteUrl()}${getPathname({ href: "/", locale })}`,
+    },
     ...(practitioner.license && { identifier: practitioner.license }),
   };
 

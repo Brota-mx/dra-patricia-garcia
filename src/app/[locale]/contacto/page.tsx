@@ -7,6 +7,7 @@ import { BookingCTA } from "@/components/sections/BookingCTA";
 import { clinic } from "@/content/clinic";
 import { getPathname } from "@/i18n/navigation";
 import { buildAlternates } from "@/lib/seo";
+import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -21,6 +22,7 @@ export async function generateMetadata({
     title: t("title"),
     description: t("lead"),
     alternates: buildAlternates("/contacto", locale),
+    keywords: seoKeywords.contact[locale],
     // Se quita el noindex de la Fase 2: ya tiene formulario funcional.
   };
 }

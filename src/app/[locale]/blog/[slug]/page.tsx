@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { getPostBySlug, getPostSlugs, urlForImage } from "@/lib/sanity";
 import { getPathname } from "@/i18n/navigation";
 import { buildAlternates, siteUrl } from "@/lib/seo";
+import { seoKeywords } from "@/content/seoKeywords";
 import { routing, type Locale } from "@/i18n/routing";
 import type { BlogImage } from "@/types/blog";
 
@@ -34,15 +35,26 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug, locale);
   if (!post) return {};
 
+  // Portada real si ya se subió desde /studio; si no, se hereda el OG por
+  // defecto del locale (opengraph-image.tsx) — nunca una imagen inventada.
+  const cover = urlForImage(post.coverImage)?.width(1200).height(630).url();
+
   return {
     title: post.title,
     description: post.excerpt,
     alternates: buildAlternates("/blog", locale),
+    // El artículo trae sus propias keywords desde Sanity (opcional); si no
+    // las tiene, cae al set estático del blog en general.
+    keywords:
+      post.seoKeywords && post.seoKeywords.length > 0
+        ? post.seoKeywords
+        : seoKeywords.blog[locale],
     openGraph: {
       type: "article",
       publishedTime: post.publishedAt,
       title: post.title,
       description: post.excerpt,
+      ...(cover && { images: [{ url: cover, width: 1200, height: 630 }] }),
     },
   };
 }
@@ -117,8 +129,20 @@ export default async function BlogPostPage({
     headline: post.title,
     description: post.excerpt,
     datePublished: post.publishedAt,
-    author: { "@type": "Person", name: post.author.name },
+    inLanguage: locale,
+    ...(post.seoKeywords && post.seoKeywords.length > 0 && {
+      keywords: post.seoKeywords.join(", "),
+    }),
+    ...(cover && { image: cover }),
+    author: {
+      "@type": "Person",
+      name: post.author.name,
+      // Sólo describe formación, no inventa un cargo — mismo texto que ya se
+      // muestra en la tarjeta de autor debajo del artículo.
+      jobTitle: post.author.credentials,
+    },
     publisher: { "@type": "MedicalBusiness", name: "Dra. Patricia García" },
+    mainEntityOfPage: `${siteUrl()}${getPathname({ href: { pathname: "/blog/[slug]", params: { slug } }, locale })}`,
     url: `${siteUrl()}${getPathname({ href: { pathname: "/blog/[slug]", params: { slug } }, locale })}`,
   };
 

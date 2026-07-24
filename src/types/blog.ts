@@ -21,6 +21,9 @@ export type PostSummary = {
 export type PostDetail = PostSummary & {
   body: PortableTextBlock[];
   medicalDisclaimer: boolean;
+  // `null` si el artículo no lleva keywords propias (campo opcional en
+  // Sanity) — la página cae al fallback estático de `content/seoKeywords.ts`.
+  seoKeywords: string[] | null;
   author: {
     name: string;
     credentials: string;

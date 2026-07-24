@@ -26,7 +26,8 @@
       "@sanity/uuid": "^3.0.3",
       "adm-zip": ">=0.6.0",
       "sharp": "^0.35.3",
-      "@portabletext/sanity-bridge": "1.2.14"
+      "@portabletext/sanity-bridge": "1.2.14",
+      "tar": "^7.5.22"
     }
   },
   "dependencies": {
@@ -39,7 +40,7 @@
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "@vercel/analytics": "^2.0.1",
-    "next": "15.5.20",
+    "next": "15.5.21",
     "next-intl": "^4.13.2",
     "next-sanity": "^11.6.13",
     "react": "19.1.0",

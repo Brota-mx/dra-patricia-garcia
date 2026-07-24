@@ -6,8 +6,9 @@ import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationMap } from "@/components/sections/LocationMap";
 import { BookingCTA } from "@/components/sections/BookingCTA";
-import { buildAlternates } from "@/lib/seo";
+import { buildAlternates, localBusinessJsonLd } from "@/lib/seo";
 import { getPathname } from "@/i18n/navigation";
+import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -16,7 +17,10 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: buildAlternates("/", locale) };
+  return {
+    alternates: buildAlternates("/", locale),
+    keywords: seoKeywords.home[locale],
+  };
 }
 
 export default async function HomePage({
@@ -28,8 +32,18 @@ export default async function HomePage({
   setRequestLocale(locale);
   const t = await getTranslations();
 
+  // JSON-LD del consultorio como entidad. Vive en la home porque es la URL
+  // raíz del sitio — el mismo criterio que usa Google para asociar un
+  // LocalBusiness con el dominio.
+  const jsonLd = localBusinessJsonLd(locale);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Hero locale={locale} />
       <CredentialsBand />
       <ServicesGrid locale={locale} />

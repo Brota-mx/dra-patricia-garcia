@@ -8,6 +8,8 @@ import { services, serviceBySlug } from "@/content/services";
 import { isPublishable } from "@/types/content";
 import { getPathname } from "@/i18n/navigation";
 import { buildAlternates, siteUrl } from "@/lib/seo";
+import { clinic } from "@/content/clinic";
+import { serviceKeywords } from "@/content/seoKeywords";
 import { routing, type Locale } from "@/i18n/routing";
 
 /**
@@ -39,6 +41,7 @@ export async function generateMetadata({
     title: service.name[locale],
     description: service.tagline[locale],
     alternates: buildAlternates("/servicios", locale),
+    keywords: serviceKeywords[service.id]?.[locale],
   };
 }
 
@@ -67,6 +70,12 @@ export default async function ServiceDetailPage({
       href: { pathname: "/servicios/[slug]", params: { slug } },
       locale,
     })}`,
+    areaServed: { "@type": "City", name: clinic.city },
+    provider: {
+      "@type": "MedicalClinic",
+      name: clinic.name,
+      url: `${siteUrl()}${getPathname({ href: "/", locale })}`,
+    },
   };
 
   return (

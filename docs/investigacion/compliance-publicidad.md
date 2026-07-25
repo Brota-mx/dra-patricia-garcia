@@ -10,6 +10,15 @@
 
 ### 1. El sitio necesita DOS trámites, no uno
 
+> 🟠 **Actualización 2026-07-24 — pendiente de confirmar con abogado.** El Aviso de Publicidad real
+> que ya tramitó la doctora (folio `2623032002A00011`) especifica "medicina estética no quirúrgica"
+> dentro de la clasificación "Atención Médica" del mismo trámite gratuito — no hay un segundo folio
+> de Permiso en los materiales que mandó. Esto podría significar que el Aviso ya cubre lo estético y
+> el análisis de abajo (que asume un Permiso aparte) queda obsoleto, o que la clasificación del
+> trámite fue un error que no corrige el hallazgo normativo. Detalle completo, con las dos lecturas
+> posibles y qué cambia según cuál gane: `docs/investigacion/hallazgo-aviso-cubre-estetica.md`.
+> **No se trata como resuelto** hasta que un abogado lo confirme.
+
 | Sección del sitio | Trámite | Costo |
 |---|---|---|
 | Home, Sobre mí, Contacto, Blog, `/servicios/medicina-general` | **Aviso** de publicidad (`COFEPRIS-02-002-A`) | Gratuito |

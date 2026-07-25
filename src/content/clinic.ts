@@ -33,12 +33,12 @@ export const clinic = {
 
   instagram: "https://www.instagram.com/doctorapatga/",
 
-  /** Dirección exacta — TODO(cliente). Necesaria para el JSON-LD LocalBusiness. */
-  address: null as PendingFromClinician<{
-    street: string;
-    neighborhood: string;
-    postalCode: string;
-  }>,
+  /** Dirección exacta — de FF-COFEPRIS-13 (Aviso de Publicidad, folio 2623032002A00011). */
+  address: {
+    street: "Avenida Xel-Ha, manzana 8, lote 6, local 8",
+    neighborhood: "Fraccionamiento Playa del Sol",
+    postalCode: "77726",
+  },
 
   /** Coordenadas para mapa y JSON-LD — TODO(cliente). */
   geo: null as PendingFromClinician<{ lat: number; lng: number }>,

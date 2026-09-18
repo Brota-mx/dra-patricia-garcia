@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.pnpm-store
 /.pnp
 .pnp.*
 .yarn/*
@@ -49,3 +50,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Material de trabajo del cliente (convención Brota): briefs de ingesta,
+# extracciones de diseño, archivos que entrega el cliente. Nunca se versiona.
+/material/

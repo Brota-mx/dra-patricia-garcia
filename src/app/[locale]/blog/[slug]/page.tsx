@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { getPostBySlug, getPostSlugs, urlForImage } from "@/lib/sanity";
 import { getPathname } from "@/i18n/navigation";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, serializeJsonLd, siteUrl } from "@/lib/seo";
 import { seoKeywords } from "@/content/seoKeywords";
 import { routing, type Locale } from "@/i18n/routing";
 import type { BlogImage } from "@/types/blog";
@@ -150,7 +150,7 @@ export default async function BlogPostPage({
     <main className="mx-auto max-w-[1200px] px-6 py-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <Button variant="ghost" size="sm" href={blogHref}>

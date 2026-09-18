@@ -7,7 +7,7 @@ import { ServiceCardCta } from "@/components/sections/ServiceCardCta";
 import { services, serviceBySlug } from "@/content/services";
 import { isPublishable } from "@/types/content";
 import { getPathname } from "@/i18n/navigation";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, serializeJsonLd, siteUrl } from "@/lib/seo";
 import { clinic } from "@/content/clinic";
 import { serviceKeywords } from "@/content/seoKeywords";
 import { routing, type Locale } from "@/i18n/routing";
@@ -82,7 +82,7 @@ export default async function ServiceDetailPage({
     <main className="mx-auto max-w-[1200px] px-6 py-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <p className="eyebrow text-malva-deep">{service.tagline[locale]}</p>

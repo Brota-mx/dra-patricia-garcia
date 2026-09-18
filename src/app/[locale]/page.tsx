@@ -6,7 +6,7 @@ import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationMap } from "@/components/sections/LocationMap";
 import { BookingCTA } from "@/components/sections/BookingCTA";
-import { buildAlternates, localBusinessJsonLd } from "@/lib/seo";
+import { buildAlternates, localBusinessJsonLd, serializeJsonLd } from "@/lib/seo";
 import { getPathname } from "@/i18n/navigation";
 import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
@@ -41,7 +41,7 @@ export default async function HomePage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <Hero locale={locale} />

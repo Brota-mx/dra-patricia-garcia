@@ -63,9 +63,13 @@ export function Footer() {
               <li className="text-muted">
                 {clinic.city}, {clinic.state}
               </li>
-              {/* TODO(cliente): dirección y horarios reales. Hasta entonces no
-                  inventamos nada — se remite a WhatsApp. */}
-              <li className="text-muted">{t("footer.addressPending")}</li>
+              {clinic.address ? (
+                <li className="text-muted">
+                  {clinic.address.street}, {clinic.address.neighborhood}
+                </li>
+              ) : (
+                <li className="text-muted">{t("footer.addressPending")}</li>
+              )}
               <li>
                 <a
                   href={clinic.instagram}

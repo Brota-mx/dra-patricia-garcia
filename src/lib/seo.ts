@@ -40,6 +40,11 @@ export function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 }
 
+/** Evita que contenido editorial cierre el bloque JSON-LD con `</script>`. */
+export function serializeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}
+
 /**
  * JSON-LD `MedicalClinic` (subtipo de `LocalBusiness`) para el consultorio
  * como entidad — distinto del `Physician` de `/sobre-mi`, que describe a la
@@ -55,7 +60,7 @@ export function localBusinessJsonLd(locale: Locale) {
     name: clinic.name,
     url: `${siteUrl()}${getPathname({ href: "/", locale })}`,
     description: clinic.specialty[locale],
-    medicalSpecialty: ["PrimaryCare", "PlasticSurgery"],
+    medicalSpecialty: ["PrimaryCare"],
     address: {
       "@type": "PostalAddress",
       addressLocality: clinic.city,

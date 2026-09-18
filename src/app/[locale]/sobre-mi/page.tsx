@@ -6,7 +6,7 @@ import { BookingCTA } from "@/components/sections/BookingCTA";
 import { practitioner } from "@/content/practitioner";
 import { clinic } from "@/content/clinic";
 import { getPathname } from "@/i18n/navigation";
-import { buildAlternates, siteUrl } from "@/lib/seo";
+import { buildAlternates, serializeJsonLd, siteUrl } from "@/lib/seo";
 import { seoKeywords } from "@/content/seoKeywords";
 import type { Locale } from "@/i18n/routing";
 
@@ -48,7 +48,7 @@ export default async function AboutPage({
     name: practitioner.name,
     url: `${siteUrl()}${getPathname({ href: "/sobre-mi", locale })}`,
     alumniOf: { "@type": "CollegeOrUniversity", name: practitioner.school },
-    medicalSpecialty: ["PrimaryCare", "PlasticSurgery"],
+    medicalSpecialty: ["PrimaryCare"],
     areaServed: { "@type": "City", name: clinic.city },
     sameAs: [practitioner.instagram],
     // Conecta esta entidad con el `MedicalClinic` de la home (Fase 11): la
@@ -66,7 +66,7 @@ export default async function AboutPage({
     <main className="mx-auto max-w-[1200px] px-6 py-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
 
       <p className="eyebrow text-malva-deep">{t("about.eyebrow")}</p>

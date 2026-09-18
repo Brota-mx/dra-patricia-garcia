@@ -53,7 +53,7 @@ export default async function ServicesPage({
         />
       </div>
 
-      <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
         {services.map((service) => {
           // Sólo enlazamos al detalle si el servicio es publicable. Un
           // procedimiento estético sin su divulgación obligatoria no tiene
@@ -65,12 +65,12 @@ export default async function ServicesPage({
           });
 
           return (
-            <Card key={service.id} as="li" className="flex flex-col">
+            <Card key={service.id} as="li" className="flex flex-col p-6 sm:p-7">
               <h2 className="text-subheading">{service.name[locale]}</h2>
               <p className="mt-2 text-sm text-malva-deep">
                 {service.tagline[locale]}
               </p>
-              <p className="mt-4 flex-1 text-sm text-muted">
+              <p className="mt-4 line-clamp-4 text-sm text-muted">
                 {service.description[locale]}
               </p>
               {linkable && (

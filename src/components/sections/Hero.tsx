@@ -19,7 +19,7 @@ export function Hero({ locale }: { locale: Locale }) {
   const t = useTranslations();
 
   return (
-    <section className="mx-auto grid max-w-[1200px] gap-12 px-6 pt-16 pb-20 sm:pt-24 lg:grid-cols-[1fr_420px] lg:items-center lg:gap-16">
+    <section className="mx-auto grid max-w-[1200px] gap-10 px-6 pt-12 pb-14 sm:pt-20 sm:pb-20 lg:grid-cols-[1fr_440px] lg:items-center lg:gap-16">
       <div>
         <p className="eyebrow text-malva-deep">{t("hero.eyebrow")}</p>
 
@@ -42,14 +42,25 @@ export function Hero({ locale }: { locale: Locale }) {
         </div>
 
         <p className="mt-6 text-sm text-muted">{t("hero.note")}</p>
+
+        <div className="mt-7 flex flex-wrap gap-2">
+          <span className="rounded-full border border-line bg-surface px-3 py-2 text-xs font-medium text-ink">
+            {t("hero.credential")}
+          </span>
+          <span className="rounded-full bg-malva-soft px-3 py-2 text-xs font-medium text-ink">
+            {t("credentials.cofeprisLabel")} {t("credentials.cofepris")}
+          </span>
+        </div>
       </div>
 
-      {/* eslint-disable-next-line @next/next/no-img-element -- mismo patrón que el retrato de Sobre-mí: activo estático servido desde public/. */}
-      <img
-        src="/practitioner/dra-patricia-garcia-hero.jpg"
-        alt={t("hero.imageAlt")}
-        className="hidden aspect-[4/5] w-full rounded-card object-cover lg:block"
-      />
+      <div className="relative lg:before:absolute lg:before:-inset-4 lg:before:rounded-card lg:before:bg-malva-soft">
+        {/* eslint-disable-next-line @next/next/no-img-element -- mismo patrón que el retrato de Sobre-mí: activo estático servido desde public/. */}
+        <img
+          src="/practitioner/dra-patricia-garcia-hero.jpg"
+          alt={t("hero.imageAlt")}
+          className="relative aspect-[16/10] w-full rounded-card object-cover shadow-subtle lg:aspect-[4/5]"
+        />
+      </div>
     </section>
   );
 }

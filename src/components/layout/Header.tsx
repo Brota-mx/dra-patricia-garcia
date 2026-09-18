@@ -65,11 +65,11 @@ export function Header() {
         </nav>
 
         {/* Menú móvil */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <LocaleSwitcher />
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger
-              className="flex h-10 w-10 items-center justify-center"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent transition-colors hover:border-line"
               aria-label={t("openMenu")}
             >
               <span aria-hidden="true" className="flex flex-col gap-1.5">
@@ -79,7 +79,7 @@ export function Header() {
             </Dialog.Trigger>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/20" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-line bg-bone p-6">
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-[calc(100%-1.5rem)] max-w-sm border-l border-line bg-bone p-6 shadow-subtle sm:p-8">
                 <div className="flex items-center justify-between">
                   <Dialog.Title className="eyebrow text-muted">
                     {t("menu")}
@@ -91,12 +91,12 @@ export function Header() {
                     <span aria-hidden="true">&times;</span>
                   </Dialog.Close>
                 </div>
-                <nav className="mt-10 flex flex-col gap-6">
+                <nav className="mt-10 flex flex-col">
                   {mainNav.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="font-display text-subheading font-medium"
+                      className="border-b border-line py-4 font-display text-subheading font-medium first:border-t"
                     >
                       {t(item.labelKey)}
                     </Link>

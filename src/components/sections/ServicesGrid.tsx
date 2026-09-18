@@ -27,17 +27,17 @@ export function ServicesGrid({ locale }: { locale: Locale }) {
         {t("sections.servicesLead")}
       </p>
 
-      <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((service) => (
-          <Card key={service.id} as="li" className="flex flex-col">
+          <Card key={service.id} as="li" className="flex flex-col p-6 sm:p-7">
             <h3 className="text-subheading">{service.name[locale]}</h3>
             <p className="mt-2 text-sm text-malva-deep">
               {service.tagline[locale]}
             </p>
-            <p className="mt-4 flex-1 text-sm text-muted">
+            <p className="mt-4 line-clamp-3 text-sm text-muted">
               {service.description[locale]}
             </p>
-            <div className="mt-6">
+            <div className="mt-5">
               <ServiceCardCta
                 message={service.whatsappIntent[locale]}
                 serviceId={service.id}

@@ -40,7 +40,7 @@ export function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 }
 
-/** Evita que contenido editorial cierre el bloque JSON-LD con `</script>`. */
+/** Evita que contenido editorial cierre el bloque JSON-LD con `</script>` al renderizarlo. */
 export function serializeJsonLd(value: unknown): string {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
